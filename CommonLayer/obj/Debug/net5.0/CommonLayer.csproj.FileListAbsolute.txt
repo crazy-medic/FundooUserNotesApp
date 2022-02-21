@@ -1,0 +1,14 @@
+D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\CommonLayer.deps.json
+D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\CommonLayer.runtimeconfig.json
+D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\CommonLayer.runtimeconfig.dev.json
+D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\CommonLayer.dll
+D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\ref\CommonLayer.dll
+D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\CommonLayer.pdb
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.AssemblyInfoInputs.cache
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.AssemblyInfo.cs
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.csproj.CoreCompileInputs.cache
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.dll
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\ref\CommonLayer.dll
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.pdb
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.genruntimeconfig.cache

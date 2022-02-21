@@ -1,0 +1,5 @@
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\FundooUserNotesApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\FundooUserNotesApp.AssemblyInfoInputs.cache
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\FundooUserNotesApp.AssemblyInfo.cs
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\FundooUserNotesApp.csproj.CoreCompileInputs.cache
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\FundooUserNotesApp.MvcApplicationPartsAssemblyInfo.cache
