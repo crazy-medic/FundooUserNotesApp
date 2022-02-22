@@ -13,13 +13,19 @@ namespace RepositoryLayer.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long UserID { get; set; }
-        public string UserName { get; set; }
+
         public string Password { get; set; }
+
         public string FirstName { get; set; }
+
         public string LastName { get; set; }
+
         public string EmailID { get; set; }
+
         public DateTime CreatedAt { get; internal set; }
+
         public DateTime? ModifiedAt { get; internal set; }
+
         public long Id { get; internal set; }
     }
 }

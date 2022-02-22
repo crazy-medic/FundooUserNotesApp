@@ -47,7 +47,7 @@ namespace RepositoryLayer.Services
                 newUser.FirstName = user.FirstName;
                 newUser.LastName = user.LastName;
                 newUser.EmailID = user.EmailID;
-                newUser.Password = encryptpass(user.Password);
+                newUser.Password = Encryptpass(user.Password);
                 newUser.CreatedAt = DateTime.Now;
 
                 this.context.UserTable.Add(newUser);
@@ -138,7 +138,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public string encryptpass(string password)
+        public string Encryptpass(string password)
         {
             string msg = "";
             byte[] encode = new byte[password.Length];
@@ -204,7 +204,7 @@ namespace RepositoryLayer.Services
                 {
                     if (resetPassword.Password == resetPassword.ConfirmPassword)
                     {
-                        Entries.Password = encryptpass(resetPassword.Password);
+                        Entries.Password = Encryptpass(resetPassword.Password);
                         this.context.Entry(Entries).State = EntityState.Modified;
                         this.context.SaveChanges();
                         return true;

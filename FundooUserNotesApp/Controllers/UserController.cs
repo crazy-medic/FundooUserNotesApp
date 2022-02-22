@@ -56,5 +56,19 @@ namespace FundooUserNotesApp.Controllers
                 throw;
             }
         }
+
+        //[HttpGet("ResetPassword")]
+        //public ActionResult ResetPassword()
+        //{
+        //    try
+        //    {
+        //        var Data1 = this.bL.ResetPassword();
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 }

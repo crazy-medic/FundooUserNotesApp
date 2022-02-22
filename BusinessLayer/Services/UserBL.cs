@@ -13,11 +13,12 @@ namespace BusinessLayer.Services
 {
     public class UserBL : IUserBL<User>
     {
-        IUserRL userRL;
-        public UserBL(IUserRL userRL)
+        IUserRL<User> userRL;
+        public UserBL(IUserRL<User> userRL)
         {
             this.userRL = userRL;
         }
+
         /// <summary>
         /// Registers the specified user.
         /// </summary>
@@ -34,6 +35,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+
         /// <summary>
         /// Gets the alldata.
         /// </summary>
@@ -42,6 +44,7 @@ namespace BusinessLayer.Services
         {
             return this.userRL.GetAllData();
         }
+
         /// <summary>
         /// Users the login.
         /// </summary>
@@ -58,6 +61,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+
         /// <summary>
         /// Sends the reset link.
         /// </summary>
@@ -74,6 +78,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+
         /// <summary>
         /// Resets the password.
         /// </summary>

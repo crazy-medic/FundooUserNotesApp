@@ -1,12 +1,19 @@
+using BusinessLayer.Interfaces;
+using BusinessLayer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RepositoryLayer.Context;
+using RepositoryLayer.Entities;
+using RepositoryLayer.Interfaces;
+using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +35,13 @@ namespace FundooUserNotesApp
         {
 
             services.AddControllers();
+            services.AddScoped<IUserBL<User>, UserBL>();
+            services.AddScoped<IUserRL<User>, UserRL>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FundooUserNotesApp", Version = "v1" });
             });
+            services.AddDbContext<FundooUserNotesContext>(options => options.UseSqlServer(Configuration["Connectionstring:FundooUserNotesApp"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
