@@ -50,11 +50,11 @@ namespace BusinessLayer.Services
         /// </summary>
         /// <param name="user1">The user1.</param>
         /// <returns></returns>
-        public LoginResponse UserLogin(UserLogin user1)
+        public LoginResponse UserLogin(UserLogin LogUser)
         {
             try
             {
-                return this.userRL.UserLogin(user1);
+                return this.userRL.UserLogin(LogUser);
             }
             catch (Exception)
             {
