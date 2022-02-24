@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interfaces;
 using CommonLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryLayer.Entities;
@@ -28,10 +29,10 @@ namespace FundooUserNotesApp.Controllers
             {
                 if (signum == null)
                 {
-                    return NotFound(new { isSuccess = false, message = "All fields are mandatory" });
+                    return NotFound(new { status = 404, isSuccess = false, message = "All fields are mandatory" });
                 }
                 bL.SignUp(signum);
-                return Ok(new { isSuccess = true, message = "Sign UP success" });
+                return Ok(new { status = 200, isSuccess = true, message = "Sign UP success" });
             }
             catch (Exception)
             {
@@ -54,6 +55,71 @@ namespace FundooUserNotesApp.Controllers
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        [HttpPost("Login")]
+        public IActionResult UserLogin(UserLogin LogUser)
+        {
+            try
+            {
+                if (LogUser == null)
+                {
+                    return NotFound(new { status = 404, isSuccess = false, message = "All fields are mandatory" });
+                }
+                bL.UserLogin(LogUser);
+                return Ok(new { status = 200, isSuccess = true, message = "Sign UP success" });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPut("ResetPassword")]
+        [Authorize]
+        public ActionResult ResetPassword(ResetPassword rpass)
+        {
+            try
+            {
+                var Data1 = this.bL.ResetPassword(rpass);
+                if(Data1 == true)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Password reset success" });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = 400, isSuccess = false, Message = "Failed to reset password" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = 400, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
+
+        [HttpPost("ForgotPassword")]
+        [Authorize]
+        public IActionResult ForgotPassword(string email)
+        {
+            if(email == null)
+            {
+                return this.BadRequest(new { Status = 400, isSuccess = false, Message = "Enter an email" });
+            }
+            try
+            {
+                if (this.bL.SendResetLink(email))
+                {
+                    return this.Ok(new { Status = 200, isSuccess = true, Message = "Reset password link sent" });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = 400, isSuccess = false, Message = "Email not found in database" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = 400, isSuccess = false, Message = e.InnerException.Message });
             }
         }
     }

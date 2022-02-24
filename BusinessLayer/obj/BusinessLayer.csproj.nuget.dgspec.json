@@ -28,9 +28,6 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\Repos\\FundooUserNotesApp\\CommonLayer\\CommonLayer.csproj": {
-                "projectPath": "D:\\Repos\\FundooUserNotesApp\\CommonLayer\\CommonLayer.csproj"
-              },
               "D:\\Repos\\FundooUserNotesApp\\RepositoryLayer\\RepositoryLayer.csproj": {
                 "projectPath": "D:\\Repos\\FundooUserNotesApp\\RepositoryLayer\\RepositoryLayer.csproj"
               }

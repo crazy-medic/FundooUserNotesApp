@@ -1,6 +1,7 @@
 ﻿using CommonLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entities;
@@ -47,11 +48,20 @@ namespace RepositoryLayer.Services
                 newUser.FirstName = user.FirstName;
                 newUser.LastName = user.LastName;
                 newUser.EmailID = user.EmailID;
-                newUser.Password = encryptpass(user.Password);
+                newUser.Password = Encryptpass(user.Password);
                 newUser.CreatedAt = DateTime.Now;
 
-                this.context.UserTable.Add(newUser);
+                //comparing to table to see if user is already registered
+                //User existingUser = this.context.UserTable.Where(X => X.EmailID == user.EmailID).FirstOrDefault();
+                //if (existingUser != null)
+                //{
+                    
+                //}
+                //else
+                //{
 
+                //}
+                this.context.UserTable.Add(newUser);
                 int result = this.context.SaveChanges();
                 if (result > 0)
                 {
@@ -82,12 +92,12 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="user1"></param>
         /// <returns></returns>
-        public LoginResponse UserLogin(UserLogin user1)
+        public LoginResponse UserLogin(UserLogin LogUser)
         {
             try
             {
-                User existingLogin = this.context.UserTable.Where(X => X.EmailID == user1.EmailId).FirstOrDefault();
-                if (Decryptpass(existingLogin.Password) == user1.Password)
+                User existingLogin = this.context.UserTable.Where(X => X.EmailID == LogUser.EmailId).FirstOrDefault();
+                if (Decryptpass(existingLogin.Password) == LogUser.Password)
                 {
                     LoginResponse login = new LoginResponse();
                     string token;
@@ -138,7 +148,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public string encryptpass(string password)
+        public string Encryptpass(string password)
         {
             string msg = "";
             byte[] encode = new byte[password.Length];
@@ -148,7 +158,7 @@ namespace RepositoryLayer.Services
         }
 
         /// <summary>
-        /// Decrypting 
+        /// Decrypting password 
         /// </summary>
         /// <param name="encryptpwd"></param>
         /// <returns></returns>
@@ -204,7 +214,7 @@ namespace RepositoryLayer.Services
                 {
                     if (resetPassword.Password == resetPassword.ConfirmPassword)
                     {
-                        Entries.Password = encryptpass(resetPassword.Password);
+                        Entries.Password = Encryptpass(resetPassword.Password);
                         this.context.Entry(Entries).State = EntityState.Modified;
                         this.context.SaveChanges();
                         return true;

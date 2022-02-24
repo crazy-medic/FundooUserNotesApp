@@ -11,7 +11,7 @@ namespace RepositoryLayer.Interfaces
     public interface IUserRL<TEntity>
     {
         public bool SignUp(SignUpModel user);
-        public LoginResponse UserLogin(UserLogin user1);
+        public LoginResponse UserLogin(UserLogin LogUser);
         public IEnumerable<User> GetAllData();
         public bool SendResetLink(string email);
         public bool ResetPassword(ResetPassword resetPassword);
