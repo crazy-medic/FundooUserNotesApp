@@ -26,6 +26,7 @@ namespace CommonLayer.Models
         [DataType(DataType.Password)]
         [Display(Name = "ConfirmPassword:")]
         [StringLength(30, MinimumLength = 6, ErrorMessage = "ConfirmPassword contain six Character")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }
     }
 }

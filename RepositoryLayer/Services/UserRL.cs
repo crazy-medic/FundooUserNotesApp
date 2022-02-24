@@ -158,7 +158,7 @@ namespace RepositoryLayer.Services
         }
 
         /// <summary>
-        /// Decrypting 
+        /// Decrypting password 
         /// </summary>
         /// <param name="encryptpwd"></param>
         /// <returns></returns>

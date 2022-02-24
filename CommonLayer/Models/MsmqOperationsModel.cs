@@ -14,6 +14,7 @@ namespace CommonLayer.Models
     {
         MessageQueue msmq = new MessageQueue();
         public string htmlString;
+
         /// <summary>
         /// Senders the specified token.
         /// </summary>
@@ -26,7 +27,6 @@ namespace CommonLayer.Models
                 if (!MessageQueue.Exists(msmq.Path))
                 {
                     MessageQueue.Create(msmq.Path);
-
                 }
                 msmq.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
                 msmq.ReceiveCompleted += Msmq_ReceiveCompleted;
