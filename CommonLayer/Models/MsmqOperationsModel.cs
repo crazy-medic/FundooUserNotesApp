@@ -52,21 +52,18 @@ namespace CommonLayer.Models
             try
             {
                 MailMessage message = new MailMessage();
-                SmtpClient smtp = new SmtpClient();
-                message.From = new MailAddress("sj7525316@gmail.com");
-                message.To.Add(new MailAddress("sj7525316@gmail.com"));
-                string bodymessage = "For reset click here <a href='https://localhost:44320/api/User/resetPassword'> click me</a>" +
-               "You can copy the token Provided here to reset your password :  " + token;
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com") 
+                {
+                    Port = 587,
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential("vineethclass250@gmail.com", "dummypassword@class")
+                };
+                message.From = new MailAddress("vineethclass250@gmail.com");
+                message.To.Add(new MailAddress("vineethclass250@gmail.com"));
+                string bodymessage = "For reset click here <a href='https://localhost:44320/api/User/resetPassword'> click me</a>" + "You can copy the token Provided here to reset your password :  " + token;
                 message.Subject = "Reset password link";
                 message.IsBodyHtml = true; //to make message body as html  
-                message.Body = bodymessage
-                    ;
-                smtp.Port = 587;
-                smtp.Host = "smtp.gmail.com"; //for gmail host  
-                smtp.EnableSsl = true;
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential("sj7525316@gmail.com", "s789456123");
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                message.Body = bodymessage;
                 smtp.Send(message);
             }
             catch (Exception) { }

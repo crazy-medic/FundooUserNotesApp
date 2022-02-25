@@ -40,10 +40,10 @@ namespace BusinessLayer.Services
         /// Gets the alldata.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<User> GetAllData()
-        {
-            return this.userRL.GetAllData();
-        }
+        //public IEnumerable<User> GetAllData()
+        //{
+        //    return this.userRL.GetAllData();
+        //}
 
         /// <summary>
         /// Users the login.
@@ -67,7 +67,7 @@ namespace BusinessLayer.Services
         /// </summary>
         /// <param name="email">The email.</param>
         /// <returns></returns>
-        public bool SendResetLink(string email)
+        public string SendResetLink(string email)
         {
             try
             {

@@ -82,10 +82,10 @@ namespace RepositoryLayer.Services
         /// Retrieving All users
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<User> GetAllData()
-        {
-            return context.UserTable.ToList();
-        }
+        //public IEnumerable<User> GetAllData()
+        //{
+        //    return context.UserTable.ToList();
+        //}
 
         /// <summary>
         /// Attempting to log user into the site.
@@ -180,7 +180,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public bool SendResetLink(string email)
+        public string SendResetLink(string email)
         {
             try
             {
@@ -189,9 +189,10 @@ namespace RepositoryLayer.Services
                 {
                     var token = GenerateJWTToken(existingLogin.EmailID, existingLogin.Id);
                     new MsmqOperation().Sender(token);
-                    return true;
+                    return token;
                 }
-                return false;
+                else
+                    return null;
             }
             catch (Exception)
             {
@@ -212,17 +213,12 @@ namespace RepositoryLayer.Services
                 var Entries = this.context.UserTable.FirstOrDefault(x => x.EmailID == resetPassword.EmailId);
                 if (Entries != null)
                 {
-                    if (resetPassword.Password == resetPassword.ConfirmPassword)
-                    {
-                        Entries.Password = Encryptpass(resetPassword.Password);
-                        this.context.Entry(Entries).State = EntityState.Modified;
-                        this.context.SaveChanges();
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    
+                    Entries.Password = Encryptpass(resetPassword.Password);
+                    this.context.Entry(Entries).State = EntityState.Modified;
+                    this.context.SaveChanges();
+                    return true;
+                    
                 }
                 else
                 {

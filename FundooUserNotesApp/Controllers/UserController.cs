@@ -40,23 +40,23 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
-        [HttpGet("listallusers")]
-        public ActionResult GetAllUserInformation()
-        {
-            try
-            {
-                var data = this.bL.GetAllData();
-                if (data == null)
-                {
-                    return NotFound(new { status = 404, isSuccess = false, message = "There are no users for this site!" });
-                }
-                return Ok(new { status = 200, isSuccess = true, message = "Got all users", Data = data });
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //[HttpGet("listallusers")]
+        //public ActionResult GetAllUserInformation()
+        //{
+        //    try
+        //    {
+        //        var data = this.bL.GetAllData();
+        //        if (data == null)
+        //        {
+        //            return NotFound(new { status = 404, isSuccess = false, message = "There are no users for this site!" });
+        //        }
+        //        return Ok(new { status = 200, isSuccess = true, message = "Got all users", Data = data });
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         [HttpPost("Login")]
         public IActionResult UserLogin(UserLogin LogUser)
@@ -82,6 +82,7 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
+                var email = User.Claims.FirstOrDefault(e => e.Type == "Email").Value;
                 var Data1 = this.bL.ResetPassword(rpass);
                 if(Data1 == true)
                 {
@@ -99,7 +100,6 @@ namespace FundooUserNotesApp.Controllers
         }
 
         [HttpPost("ForgotPassword")]
-        [Authorize]
         public IActionResult ForgotPassword(string email)
         {
             if(email == null)
@@ -108,7 +108,7 @@ namespace FundooUserNotesApp.Controllers
             }
             try
             {
-                if (this.bL.SendResetLink(email))
+                if (this.bL.SendResetLink(email) != null)
                 {
                     return this.Ok(new { Status = 200, isSuccess = true, Message = "Reset password link sent" });
                 }
