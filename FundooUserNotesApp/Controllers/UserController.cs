@@ -7,6 +7,7 @@ using RepositoryLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FundooUserNotesApp.Controllers
@@ -78,20 +79,14 @@ namespace FundooUserNotesApp.Controllers
 
         [HttpPut("ResetPassword")]
         [Authorize]
-        public ActionResult ResetPassword(ResetPassword rpass)
+        public ActionResult ResetPassword(string Password, string ConfirmPassword)
         {
             try
             {
-                var email = User.Claims.FirstOrDefault(e => e.Type == "Email").Value;
-                var Data1 = this.bL.ResetPassword(rpass);
-                if(Data1 == true)
-                {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Password reset success" });
-                }
-                else
-                {
-                    return this.BadRequest(new { Status = 400, isSuccess = false, Message = "Failed to reset password" });
-                }
+                // var email = User.Claims.FirstOrDefault(e => e.Type == "Email").Value;
+                var email = User.FindFirst(ClaimTypes.Email).Value.ToString();
+                var Reset = this.bL.ResetPassword(email, Password, ConfirmPassword);
+                return this.Ok(new { status = 200, isSuccess = true, Message = "Password change success" });
             }
             catch (Exception e)
             {

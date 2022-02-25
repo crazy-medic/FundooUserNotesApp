@@ -101,10 +101,10 @@ namespace FundooUserNotesApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
-            app.UseAuthentication();
-            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

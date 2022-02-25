@@ -85,11 +85,11 @@ namespace BusinessLayer.Services
         /// <param name="resetPassword">The reset password.</param>
         /// <returns></returns>
         /// <exception cref="System.Exception"></exception>
-        public bool ResetPassword(ResetPassword resetPassword)
+        public bool ResetPassword(string email, string Password, string ConfirmPassword)
         {
             try
             {
-                bool result = this.userRL.ResetPassword(resetPassword);
+                bool result = this.userRL.ResetPassword(email, Password, ConfirmPassword);
                 return result;
             }
             catch (Exception ex)
