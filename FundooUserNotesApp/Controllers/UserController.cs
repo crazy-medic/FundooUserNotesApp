@@ -16,13 +16,25 @@ namespace FundooUserNotesApp.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        /// <summary>
+        /// object creation
+        /// </summary>
         public readonly IUserBL<User> bL;
 
+        /// <summary>
+        /// assignment of objects
+        /// </summary>
+        /// <param name="bL"></param>
         public UserController(IUserBL<User> bL)
         {
             this.bL = bL;
         }
 
+        /// <summary>
+        /// Sign up api
+        /// </summary>
+        /// <param name="signum"></param>
+        /// <returns></returns>
         [HttpPost("SignUp")]
         public IActionResult Signup(SignUpModel signum)
         {
@@ -41,6 +53,11 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        //deprecated api
+        /// <summary>
+        /// API to check list of users of the Fundoo app
+        /// </summary>
+        /// <returns></returns>
         //[HttpGet("listallusers")]
         //public ActionResult GetAllUserInformation()
         //{
@@ -59,6 +76,11 @@ namespace FundooUserNotesApp.Controllers
         //    }
         //}
 
+        /// <summary>
+        /// Login Api
+        /// </summary>
+        /// <param name="LogUser"></param>
+        /// <returns></returns>
         [HttpPost("Login")]
         public IActionResult UserLogin(UserLogin LogUser)
         {
@@ -77,6 +99,12 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Reset/set new password API
+        /// </summary>
+        /// <param name="Password"></param>
+        /// <param name="ConfirmPassword"></param>
+        /// <returns></returns>
         [HttpPut("ResetPassword")]
         [Authorize]
         public ActionResult ResetPassword(string Password, string ConfirmPassword)
@@ -94,6 +122,11 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        /// <summary>
+        /// API to request for creating new password when user forgets password
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpPost("ForgotPassword")]
         public IActionResult ForgotPassword(string email)
         {

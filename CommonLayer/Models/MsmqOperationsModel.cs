@@ -13,7 +13,7 @@ namespace CommonLayer.Models
     public class MsmqOperation
     {
         MessageQueue msmq = new MessageQueue();
-        public string htmlString;
+        
 
         /// <summary>
         /// Senders the specified token.
