@@ -4,7 +4,6 @@ D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\CommonLayer.runtimeconf
 D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\CommonLayer.dll
 D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\ref\CommonLayer.dll
 D:\Repos\FundooUserNotesApp\CommonLayer\bin\Debug\net5.0\CommonLayer.pdb
-D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.csproj.AssemblyReference.cache
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.GeneratedMSBuildEditorConfig.editorconfig
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.AssemblyInfoInputs.cache
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.AssemblyInfo.cs
@@ -13,3 +12,4 @@ D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.dll
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\ref\CommonLayer.dll
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.pdb
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.genruntimeconfig.cache
+D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.csproj.AssemblyReference.cache

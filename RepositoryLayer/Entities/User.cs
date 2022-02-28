@@ -25,7 +25,5 @@ namespace RepositoryLayer.Entities
         public DateTime CreatedAt { get; internal set; }
 
         public DateTime? ModifiedAt { get; internal set; }
-
-        public long Id { get; internal set; }
     }
 }

@@ -101,8 +101,8 @@ namespace RepositoryLayer.Services
                 {
                     LoginResponse login = new LoginResponse();
                     string token;
-                    token = GenerateJWTToken(existingLogin.EmailID, existingLogin.Id);
-                    login.Id = existingLogin.Id;
+                    token = GenerateJWTToken(existingLogin.EmailID, existingLogin.UserID);
+                    login.Id = existingLogin.UserID;
                     login.FirstName = existingLogin.FirstName;
                     login.LastName = existingLogin.LastName;
                     login.EmailId = existingLogin.EmailID;
@@ -187,7 +187,7 @@ namespace RepositoryLayer.Services
                 User existingLogin = this.context.UserTable.Where(X => X.EmailID == email).FirstOrDefault();
                 if (existingLogin.EmailID != null)
                 {
-                    var token = GenerateJWTToken(existingLogin.EmailID, existingLogin.Id);
+                    var token = GenerateJWTToken(existingLogin.EmailID, existingLogin.UserID);
                     new MsmqOperation().Sender(token);
                     return token;
                 }
