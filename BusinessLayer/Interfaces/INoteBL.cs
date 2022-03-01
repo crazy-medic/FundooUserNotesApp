@@ -12,5 +12,10 @@ namespace BusinessLayer.Interfaces
     {
         public bool CreateNote(NoteModel noteModel);
         public IEnumerable<Note> GetAllNotes();
+        public string UpdateNotes(Note note);
+        public bool ArchiveNote(long noteid);
+        public bool PinNote(long noteid);
+        public bool DeleteNote(long noteid);
+        public bool ForeverDeleteNote(long noteid);
     }
 }

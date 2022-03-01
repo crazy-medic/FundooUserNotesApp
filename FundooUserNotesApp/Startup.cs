@@ -42,6 +42,8 @@ namespace FundooUserNotesApp
             //Service configuration for user services
             services.AddScoped<IUserBL<User>, UserBL>();
             services.AddScoped<IUserRL<User>, UserRL>();
+            services.AddScoped<INoteBL, NoteBL>();
+            services.AddScoped<INoteRL, NoteRL>();
 
             //Authentication services
             services.AddAuthentication(x =>

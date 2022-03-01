@@ -86,12 +86,16 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                if (LogUser == null)
+                if (LogUser.EmailId == null)
                 {
                     return NotFound(new { status = 404, isSuccess = false, message = "All fields are mandatory" });
                 }
-                bL.UserLogin(LogUser);
-                return Ok(new { status = 200, isSuccess = true, message = "Sign UP success" });
+                LoginResponse result = bL.UserLogin(LogUser);
+                if(result.EmailId != null)
+                {
+                    return Ok(new { status = 200, isSuccess = true, message = "Sign UP success", data = result.Token });
+                }
+                return BadRequest(new { status = 401, isSuccess = false, Message = "Internal error" });
             }
             catch (Exception)
             {

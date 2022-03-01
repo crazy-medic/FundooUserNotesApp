@@ -43,11 +43,11 @@ namespace FundooUserNotesApp.Controllers
             {
                 if (this.Nbl.CreateNote(noteModel))
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, message = " note created successfully " });
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Note created" });
                 }
                 else
                 {
-                    return this.BadRequest(new { status = 401, isSuccess = false, message = "unsuccessful Notes not Added" });
+                    return this.BadRequest(new { status = 401, isSuccess = false, message = "Failed to create note" });
                 }
             }
             catch (Exception)
@@ -56,17 +56,19 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
-
+        /// <summary>
+        /// API to retrieve all user notes
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Shownotes")]
-        public IEnumerable<Note> GetAllNotes()
+        public IActionResult GetAllNotes()
         {
             try
             {
                 IEnumerable<Note> notes = Nbl.GetAllNotes();
                 if (notes != null)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, message = " Successful" });
-                    
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful" });
                 }
                 else
                 {
@@ -79,5 +81,134 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        /// <summary>
+        /// API to update contents of a note and update its ModifiedAt time
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
+        [HttpPut("UpdateNote")]
+        public IActionResult UpdateNote(Note note)
+        {
+            try
+            {
+                var result = this.Nbl.UpdateNotes(note);
+                if (result.Equals("Done"))
+                {
+                    return this.Ok(new { Success = true, message = "Note Updated successfully " });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "Error while updating notes" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
+            }
+        }
+
+        /// <summary>
+        /// API to Un/Archive a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpPost("ArchiveNote")]
+        public IActionResult ArchiveNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nbl.ArchiveNote(noteid);
+                if(result == true)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note Archived" });
+                }
+                if(result == false)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note UnArchived" });
+                }
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+            }
+        }
+
+        /// <summary>
+        /// API for Un/Pin a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpPost("PinNote")]
+        public IActionResult PinNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nbl.PinNote(noteid);
+                if (result == true)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note Pinned" });
+                }
+                if (result == false)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note UnPinned" });
+                }
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+            }
+        }
+
+        /// <summary>
+        /// Delete the note using note id
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteNote")]
+        public IActionResult DeleteNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nbl.DeleteNote(noteid);
+                if (result == true)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note Deleted" });
+                }
+                if (result == false)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note Restored" });
+                }
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+            }
+        }
+
+        /// <summary>
+        /// Deletes the note forever
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpDelete("ForeverDelete")]
+        public IActionResult ForeverDeleteNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nbl.ForeverDeleteNote(noteid);
+                if(result == true)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Deleted note forever" });
+                }
+                return this.BadRequest(new { status = 401, isSuccess = false, Message = "Incorrect note id" });
+            }
+            catch (Exception)
+            {
+                return this.NotFound(new { status = 404, isSuccess = false, Message = "Note not found or already deleted" });
+            }
+        }
     }
 }

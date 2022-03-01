@@ -43,11 +43,100 @@ namespace BusinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Retrieving all notes
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Note> GetAllNotes()
         {
             try
             {
                 return this.Nrl.GetAllNotes();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Updating note contents and update time
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
+        public string UpdateNotes(Note note)
+        {
+            try
+            {
+                string result = this.Nrl.UpdateNotes(note);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Un/Archive a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool ArchiveNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.ArchiveNote(noteid);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Un/Pin the note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool PinNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.PinNote(noteid);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Delete/recover a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool DeleteNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.DeleteNote(noteid);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool ForeverDeleteNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.ForeverDeleteNote(noteid);
+                return result;
             }
             catch (Exception)
             {
