@@ -20,5 +20,6 @@ namespace BusinessLayer.Interfaces
         public bool ForeverDeleteNote(long noteid);
         public string AddNoteColor(string color, long noteid);
         public bool AddNoteBgImage(IFormFile imageURL, long noteid);
+        public bool DeleteNoteBgImage(long noteid);
     }
 }

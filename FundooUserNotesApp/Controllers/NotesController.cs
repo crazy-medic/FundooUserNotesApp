@@ -294,7 +294,12 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
-
+        /// <summary>
+        /// API for adding a background image for a note
+        /// </summary>
+        /// <param name="imageURL"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         [HttpPost("AddBgImage")]
         public IActionResult AddNoteBgImage(IFormFile imageURL, long noteid)
         {
@@ -309,7 +314,41 @@ namespace FundooUserNotesApp.Controllers
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Note Bg Image updated" });
                     }
-                    return this.BadRequest(new { status = 401, isSuccess = false, Message = "Note Bg image not updated" });
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Note Bg image not updated" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not logged in" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
+
+        /// <summary>
+        /// API to remove Background image from a note
+        /// </summary>
+        [HttpDelete("RemoveBgImage")]
+        public IActionResult DeleteNoteBgImage (long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var NoteBgImage = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if(noteid == 0)
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, Message = "Noteid not entered, Please enter a note id!" });
+                }
+                if(NoteBgImage.UserId == userid)
+                {
+                    var result = this.Nbl.DeleteNoteBgImage(noteid);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Bg image deleted" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Image note deleted" });
                 }
                 else
                 {

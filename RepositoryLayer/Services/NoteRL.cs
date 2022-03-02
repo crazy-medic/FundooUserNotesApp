@@ -321,5 +321,29 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+
+        public bool DeleteNoteBgImage(long noteid)
+        {
+            try
+            {
+                if (noteid > 0)
+                {
+                    var note = this.context.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                    if (note != null)
+                    {
+                        note.BgImage = "";
+                        note.ModifiedAt = DateTime.Now;
+                        this.context.SaveChangesAsync();
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

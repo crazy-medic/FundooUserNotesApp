@@ -170,5 +170,18 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+
+        public bool DeleteNoteBgImage(long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.DeleteNoteBgImage(noteid);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
