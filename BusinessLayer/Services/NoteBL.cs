@@ -157,6 +157,18 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+public string RemoveNoteColor(long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.RemoveNoteColor(noteid);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public bool AddNoteBgImage(IFormFile imageURL, long noteid)
         {

@@ -278,6 +278,39 @@ namespace RepositoryLayer.Services
         }
 
         /// <summary>
+        /// Function for removing note color
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public string RemoveNoteColor(long noteid)
+        {
+            try
+            {
+                if (noteid > 0)
+                {
+                    var note = this.context.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                    if (note != null)
+                    {
+                        note.Color = "";
+                        note.ModifiedAt = DateTime.Now;
+                        this.context.SaveChangesAsync();
+                        return "Updated";
+                    }
+                    else
+                    {
+                        return "Failed";
+                    }
+                }
+                return "Failed";
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// function for adding a background image for a note
         /// </summary>
         /// <param name="imageURL"></param>

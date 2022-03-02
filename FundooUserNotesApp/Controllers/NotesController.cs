@@ -295,6 +295,38 @@ namespace FundooUserNotesApp.Controllers
         }
 
         /// <summary>
+        /// API to remove from notes
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveColor")]
+        public IActionResult RemoveNoteColor(long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var ColourNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (ColourNote.UserId == userid)
+                {
+                    var result = this.Nbl.RemoveNoteColor(noteid);
+                    if (result == "Updated")
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
+                    }
+                    return this.BadRequest(new { status = 401, isSuccess = false, Message = "Note color not updated" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 401, isSuccess = false, Message = e.Message });
+            }
+        }
+        /// <summary>
         /// API for adding a background image for a note
         /// </summary>
         /// <param name="imageURL"></param>
