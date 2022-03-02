@@ -31,11 +31,11 @@ namespace BusinessLayer.Services
         /// </summary>
         /// <param name="noteModel"></param>
         /// <returns></returns>
-        public bool CreateNote(NoteModel noteModel)
+        public bool CreateNote(NoteModel noteModel,long userid)
         {
             try
             {
-                return this.Nrl.CreateNote(noteModel);
+                return this.Nrl.CreateNote(noteModel,userid);
             }
             catch (Exception)
             {
@@ -136,6 +136,19 @@ namespace BusinessLayer.Services
             try
             {
                 var result = this.Nrl.ForeverDeleteNote(noteid);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public string AddNoteColor(string color, long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.AddNoteColor(color,noteid);
                 return result;
             }
             catch (Exception)

@@ -10,12 +10,13 @@ namespace BusinessLayer.Interfaces
 {
     public interface INoteBL
     {
-        public bool CreateNote(NoteModel noteModel);
+        public bool CreateNote(NoteModel noteModel,long userid);
         public IEnumerable<Note> GetAllNotes();
         public string UpdateNotes(Note note);
         public bool ArchiveNote(long noteid);
         public bool PinNote(long noteid);
         public bool DeleteNote(long noteid);
         public bool ForeverDeleteNote(long noteid);
+        public string AddNoteColor(string color, long noteid);
     }
 }

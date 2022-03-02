@@ -36,7 +36,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="noteModel"></param>
         /// <returns></returns>
-        public bool CreateNote(NoteModel noteModel)
+        public bool CreateNote(NoteModel noteModel, long userid)
         {
             try
             {
@@ -51,6 +51,7 @@ namespace RepositoryLayer.Services
                 newNotes.IsPinned = noteModel.IsPinned;
                 newNotes.IsDeleted = noteModel.IsDeleted;
                 newNotes.CreatedAt = DateTime.Now;
+                newNotes.UserId = userid;
                 //Adding the data to database
                 this.context.NotesTable.Add(newNotes);
                 //Save the changes in database
@@ -217,6 +218,38 @@ namespace RepositoryLayer.Services
                     }
                 }
                 return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Function for adding note color
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public string AddNoteColor(string color, long noteid)
+        {
+            try
+            {
+                if (noteid > 0)
+                {
+                    var note = this.context.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                    if (note != null)
+                    {
+                        note.Color = color;
+                        this.context.SaveChangesAsync();
+                        return "Updated";
+                    }
+                    else
+                    {
+                        return "Failed";
+                    }
+                }
+                return "Failed";
             }
             catch (Exception)
             {

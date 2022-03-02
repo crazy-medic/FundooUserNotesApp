@@ -18,17 +18,15 @@ namespace FundooUserNotesApp.Controllers
     public class NotesController : ControllerBase
     {
         private readonly INoteBL Nbl;
-        private readonly FundooUserNotesContext FUNcontext;
 
         /// <summary>
         /// Construction function
         /// </summary>
         /// <param name="Nbl"></param>
         /// <param name="funContext"></param>
-        public NotesController(INoteBL Nbl,FundooUserNotesContext funContext)
+        public NotesController(INoteBL Nbl)
         {
             this.Nbl = Nbl;
-            this.FUNcontext = funContext;
         }
 
         /// <summary>
@@ -41,7 +39,8 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                if (this.Nbl.CreateNote(noteModel))
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                if (this.Nbl.CreateNote(noteModel,userid))
                 {
                     return this.Ok(new { status = 200, isSuccess = true, message = "Note created" });
                 }
@@ -50,9 +49,9 @@ namespace FundooUserNotesApp.Controllers
                     return this.BadRequest(new { status = 401, isSuccess = false, message = "Failed to create note" });
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                return this.BadRequest(new { status = 400,isSuccess = false, Message=e.InnerException.Message});
             }
         }
 
@@ -208,6 +207,30 @@ namespace FundooUserNotesApp.Controllers
             catch (Exception)
             {
                 return this.NotFound(new { status = 404, isSuccess = false, Message = "Note not found or already deleted" });
+            }
+        }
+
+        /// <summary>
+        /// API for color addition to notes
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpPost("AddColor")]
+        public IActionResult AddNoteColor(string color, long noteid)
+        {
+            try
+            {
+                var result = this.Nbl.AddNoteColor(color,noteid);
+                if (result == "Updated")
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
+                }
+                return this.BadRequest(new { status = 401, isSuccess = false, Message = "Note color not updated" });
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 401, isSuccess = false, Message = e.Message });
             }
         }
     }
