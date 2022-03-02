@@ -1,0 +1,7 @@
+*.log
+temp/
+*.suo
+.vs/
+Fundonotes.csproj
+bin/
+obj/
