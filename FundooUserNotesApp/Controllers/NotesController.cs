@@ -293,5 +293,34 @@ namespace FundooUserNotesApp.Controllers
                 return this.BadRequest(new { status = 401, isSuccess = false, Message = e.Message });
             }
         }
+
+
+        [HttpPost("AddBgImage")]
+        public IActionResult AddNoteBgImage(IFormFile imageURL, long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var NoteBgImage = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                //function to call cloudinary to be inserted here and assigned to URL variable to pass below.....
+                if(NoteBgImage.UserId == userid)
+                {
+                    var result = this.Nbl.AddNoteBgImage(imageURL,noteid);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Bg Image updated" });
+                    }
+                    return this.BadRequest(new { status = 401, isSuccess = false, Message = "Note Bg image not updated" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not logged in" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
     }
 }

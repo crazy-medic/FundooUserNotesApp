@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Models;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,6 @@ namespace BusinessLayer.Interfaces
         public bool DeleteNote(long noteid);
         public bool ForeverDeleteNote(long noteid);
         public string AddNoteColor(string color, long noteid);
+        public bool AddNoteBgImage(IFormFile imageURL, long noteid);
     }
 }

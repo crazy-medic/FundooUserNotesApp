@@ -1,4 +1,7 @@
-﻿using CommonLayer.Models;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using CommonLayer.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
@@ -123,13 +126,18 @@ namespace RepositoryLayer.Services
                 if (note.IsArchived == false)
                 {
                     note.IsArchived = true;
-                    context.Entry(note).State = EntityState.Modified;
+                    note.IsPinned = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
                     context.SaveChanges();
                     return true;
                 }
                 else
                 {
                     note.IsArchived = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
                     return false;
                 }
             }
@@ -152,13 +160,19 @@ namespace RepositoryLayer.Services
                 if (note.IsPinned == false)
                 {
                     note.IsPinned = true;
-                    context.Entry(note).State = EntityState.Modified;
+                    note.IsArchived = false;
+                    note.IsDeleted = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
                     context.SaveChanges();
                     return true;
                 }
                 else 
                 {
                     note.IsPinned = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
                     return false;
                 }
                 
@@ -182,6 +196,8 @@ namespace RepositoryLayer.Services
                 if (note.IsDeleted == false)
                 {
                     note.IsDeleted = true;
+                    note.IsArchived = false;
+                    note.IsPinned = false;
                     context.Entry(note).State = EntityState.Modified;
                     context.SaveChanges();
                     return true;
@@ -189,6 +205,9 @@ namespace RepositoryLayer.Services
                 else
                 {
                     note.IsDeleted = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
                     return false;
                 }
             }
@@ -241,6 +260,7 @@ namespace RepositoryLayer.Services
                     if (note != null)
                     {
                         note.Color = color;
+                        note.ModifiedAt = DateTime.Now;
                         this.context.SaveChangesAsync();
                         return "Updated";
                     }
@@ -250,6 +270,51 @@ namespace RepositoryLayer.Services
                     }
                 }
                 return "Failed";
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// function for adding a background image for a note
+        /// </summary>
+        /// <param name="imageURL"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool AddNoteBgImage(IFormFile imageURL, long noteid)
+        {
+            try
+            {
+                if (noteid > 0)
+                {
+                    var note = this.context.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                    if (note != null)
+                    {
+                        Account acc = new Account(
+                            config["Cloudinary:cloud_name"],
+                            config["Cloudinary:api_key"],
+                            config["Cloudinary:api_secret"]
+                            );
+                        Cloudinary Cld = new Cloudinary(acc);
+                        var path = imageURL.OpenReadStream();
+                        ImageUploadParams upLoadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription(imageURL.FileName,path)
+                        };
+                        var UploadResult = Cld.Upload(upLoadParams);
+                        note.BgImage = UploadResult.Url.ToString();
+                        note.ModifiedAt = DateTime.Now;
+                        this.context.SaveChangesAsync();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
             }
             catch (Exception)
             {
