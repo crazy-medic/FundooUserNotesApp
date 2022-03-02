@@ -188,7 +188,7 @@ namespace FundooUserNotesApp.Controllers
             }
             catch (Exception e)
             {
-                return this.NotFound(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+                return this.BadRequest(new { Status = false, Message = e.Message, InnerException = e.InnerException });
             }
         }
 
@@ -224,7 +224,7 @@ namespace FundooUserNotesApp.Controllers
             }
             catch (Exception e)
             {
-                return this.NotFound(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+                return this.BadRequest(new { Status = false, Message = e.Message, InnerException = e.InnerException });
             }
         }
 
@@ -257,7 +257,7 @@ namespace FundooUserNotesApp.Controllers
             }
             catch (Exception)
             {
-                return this.NotFound(new { status = 404, isSuccess = false, Message = "Note not found or already deleted" });
+                return this.BadRequest(new { status = 404, isSuccess = false, Message = "Note not found or already deleted" });
             }
         }
 
