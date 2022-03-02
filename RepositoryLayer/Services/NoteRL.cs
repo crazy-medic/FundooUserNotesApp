@@ -75,11 +75,11 @@ namespace RepositoryLayer.Services
         /// Show user all his notes using this function
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Note> GetAllNotes()
+        public IEnumerable<Note> GetAllNotes(long userid)
         {
             try
             {
-                return this.context.NotesTable.ToList();
+                return this.context.NotesTable.ToList().Where(x=>x.UserId == userid);
             }
             catch (Exception)
             {

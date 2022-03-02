@@ -11,7 +11,7 @@ namespace BusinessLayer.Interfaces
     public interface INoteBL
     {
         public bool CreateNote(NoteModel noteModel,long userid);
-        public IEnumerable<Note> GetAllNotes();
+        public IEnumerable<Note> GetAllNotes(long userid);
         public string UpdateNotes(Note note);
         public bool ArchiveNote(long noteid);
         public bool PinNote(long noteid);

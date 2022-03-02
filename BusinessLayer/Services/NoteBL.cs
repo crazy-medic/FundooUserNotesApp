@@ -47,11 +47,11 @@ namespace BusinessLayer.Services
         /// Retrieving all notes
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Note> GetAllNotes()
+        public IEnumerable<Note> GetAllNotes(long userid)
         {
             try
             {
-                return this.Nrl.GetAllNotes();
+                return this.Nrl.GetAllNotes(userid);
             }
             catch (Exception)
             {

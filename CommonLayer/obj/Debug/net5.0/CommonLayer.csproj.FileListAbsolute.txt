@@ -12,4 +12,3 @@ D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.dll
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\ref\CommonLayer.dll
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.pdb
 D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.genruntimeconfig.cache
-D:\Repos\FundooUserNotesApp\CommonLayer\obj\Debug\net5.0\CommonLayer.csproj.AssemblyReference.cache

@@ -17,16 +17,21 @@ namespace FundooUserNotesApp.Controllers
     [Authorize]
     public class NotesController : ControllerBase
     {
+        /// <summary>
+        /// Global variables
+        /// </summary>
         private readonly INoteBL Nbl;
+        private readonly FundooUserNotesContext FUNcontext;
 
         /// <summary>
         /// Construction function
         /// </summary>
         /// <param name="Nbl"></param>
         /// <param name="funContext"></param>
-        public NotesController(INoteBL Nbl)
+        public NotesController(INoteBL Nbl, FundooUserNotesContext funContext)
         {
             this.Nbl = Nbl;
+            this.FUNcontext = funContext;
         }
 
         /// <summary>
@@ -39,7 +44,7 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 if (this.Nbl.CreateNote(noteModel,userid))
                 {
                     return this.Ok(new { status = 200, isSuccess = true, message = "Note created" });
@@ -64,10 +69,11 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                IEnumerable<Note> notes = Nbl.GetAllNotes();
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                IEnumerable<Note> notes = Nbl.GetAllNotes(userid);
                 if (notes != null)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful" });
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = notes });
                 }
                 else
                 {
@@ -90,19 +96,27 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                var result = this.Nbl.UpdateNotes(note);
-                if (result.Equals("Done"))
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                if(note.UserId == userid)
                 {
-                    return this.Ok(new { Success = true, message = "Note Updated successfully " });
+                    var result = this.Nbl.UpdateNotes(note);
+                    if (result.Equals("Done"))
+                    {
+                        return this.Ok(new { Success = true, message = "Note Updated successfully " });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { Status = false, Message = "Error while updating notes" });
+                    }
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = "Error while updating notes" });
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Unauthorized" });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
+                return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
         }
 
@@ -116,20 +130,29 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                var result = this.Nbl.ArchiveNote(noteid);
-                if(result == true)
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var ArchNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if(ArchNote.UserId == userid)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note Archived" });
+                    var result = this.Nbl.ArchiveNote(noteid);
+                    if (result == true)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Archived" });
+                    }
+                    if (result == false)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note UnArchived" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
                 }
-                if(result == false)
+                else
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note UnArchived" });
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
                 }
-                return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
             }
             catch (Exception e)
             {
-                return this.NotFound(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+                return this.BadRequest(new { Status = false, Message = e.Message, InnerException = e.InnerException });
             }
         }
 
@@ -143,16 +166,25 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                var result = this.Nbl.PinNote(noteid);
-                if (result == true)
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var PinnedNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (PinnedNote.UserId == userid)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note Pinned" });
+                    var result = this.Nbl.PinNote(noteid);
+                    if (result == true)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Pinned" });
+                    }
+                    if (result == false)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note UnPinned" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
                 }
-                if (result == false)
+                else
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note UnPinned" });
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
                 }
-                return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
             }
             catch (Exception e)
             {
@@ -170,16 +202,25 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                var result = this.Nbl.DeleteNote(noteid);
-                if (result == true)
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var DeletedNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (DeletedNote.UserId == userid)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note Deleted" });
+                    var result = this.Nbl.DeleteNote(noteid);
+                    if (result == true)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Deleted" });
+                    }
+                    if (result == false)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Restored" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
                 }
-                if (result == false)
+                else
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note Restored" });
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
                 }
-                return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
             }
             catch (Exception e)
             {
@@ -197,12 +238,22 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                var result = this.Nbl.ForeverDeleteNote(noteid);
-                if(result == true)
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var FDeleNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (FDeleNote.UserId == userid)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Deleted note forever" });
+                    var result = this.Nbl.ForeverDeleteNote(noteid);
+                    if (result == true)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Deleted note forever" });
+                    }
+                    return this.BadRequest(new { status = 401, isSuccess = false, Message = "Incorrect note id" });
                 }
-                return this.BadRequest(new { status = 401, isSuccess = false, Message = "Incorrect note id" });
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
+                }
+
             }
             catch (Exception)
             {
@@ -221,12 +272,21 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                var result = this.Nbl.AddNoteColor(color,noteid);
-                if (result == "Updated")
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var ColourNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (ColourNote.UserId == userid)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
+                    var result = this.Nbl.AddNoteColor(color, noteid);
+                    if (result == "Updated")
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
+                    }
+                    return this.BadRequest(new { status = 401, isSuccess = false, Message = "Note color not updated" });
                 }
-                return this.BadRequest(new { status = 401, isSuccess = false, Message = "Note color not updated" });
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
+                }
             }
             catch (Exception e)
             {
