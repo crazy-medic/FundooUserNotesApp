@@ -31,7 +31,7 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserID").Value);
                 var collabnote = FUNContext.NotesTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
                 if(collabnote.UserId == userid)
                 {
@@ -56,7 +56,7 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserID").Value);
                 IEnumerable<Collaborator> collabnote = FUNContext.CollabTable.Where(x => x.NoteId == noteid).ToList();
                 if (collabnote != null)
                 {
@@ -80,7 +80,7 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserID").Value);
                 var collabmember = FUNContext.CollabTable.Where(x => x.CollabEmail == collabModel.EmailId).SingleOrDefault();
                 var NoteOwner = FUNContext.NotesTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
                 if(NoteOwner.UserId == userid)

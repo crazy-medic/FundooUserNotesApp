@@ -119,7 +119,7 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                if(note.UserId == userid)
+                if (note.UserId == userid)
                 {
                     var result = this.Nbl.UpdateNotes(note);
                     if (result.Equals("Done"))
