@@ -81,8 +81,9 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var collabnote = FUNContext.CollabTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
-                if(collabnote.UserID == userid)
+                var collabmember = FUNContext.CollabTable.Where(x => x.CollabEmail == collabModel.EmailId).SingleOrDefault();
+                var NoteOwner = FUNContext.NotesTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
+                if(NoteOwner.UserId == userid)
                 {
                     var result = this.collabBL.RemoveCollab(collabModel);
                     if (result)
