@@ -76,11 +76,22 @@ namespace FundooUserNotesApp.Controllers
         }
 
         [HttpDelete("Remove")]
-        public IActionResult RemoveCollab(long noteid)
+        public IActionResult RemoveCollab(CollabModel collabModel)
         {
             try
             {
-
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var collabnote = FUNContext.CollabTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
+                if(collabnote.UserID == userid)
+                {
+                    var result = this.collabBL.RemoveCollab(collabModel);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Deleted collab for user", data = collabModel.EmailId });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Check the collab mail or noteid" });
+                }
+                return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to add collab to this note" });
             }
             catch (Exception e)
             {

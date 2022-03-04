@@ -41,6 +41,18 @@ namespace BusinessLayer.Services
             }
         }
 
+        public bool RemoveCollab(CollabModel collabModel)
+        {
+            try
+            {
+                return this.collabRL.RemoveCollab(collabModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public IEnumerable<Collaborator> Show(long noteid)
         {
             try

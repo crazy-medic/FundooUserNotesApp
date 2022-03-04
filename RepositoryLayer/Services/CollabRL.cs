@@ -66,6 +66,29 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public bool RemoveCollab(CollabModel collabModel)
+        {
+            try
+            {
+                var collab = this.FUNContext.CollabTable.Where(x => x.CollabEmail == collabModel.EmailId).SingleOrDefault();
+                if(collab != null)
+                {
+                    this.FUNContext.CollabTable.Remove(collab);
+                    this.FUNContext.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// displays all collabs of a note
         /// </summary>

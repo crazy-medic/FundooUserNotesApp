@@ -12,5 +12,6 @@ namespace RepositoryLayer.Interfaces
     {
         public bool AddCollab(CollabModel collaborator);
         public IEnumerable<Collaborator> Show(long noteid);
+        public bool RemoveCollab(CollabModel collabModel);
     }
 }
