@@ -13,6 +13,7 @@ namespace RepositoryLayer.Interfaces
     {
         public bool CreateNote(NoteModel noteModel, long userid);
         public IEnumerable<Note> GetAllNotes(long userid);
+        public IEnumerable<Note> GetIDNote(long noteid);
         public string UpdateNotes(Note note);
         public bool ArchiveNote(long noteid);
         public bool PinNote(long noteid);
@@ -22,5 +23,6 @@ namespace RepositoryLayer.Interfaces
         public string RemoveNoteColor(long noteid);
         public bool AddNoteBgImage(IFormFile imageURL, long noteid);
         public bool DeleteNoteBgImage(long noteid);
+        
     }
 }

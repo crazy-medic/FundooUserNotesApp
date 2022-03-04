@@ -44,6 +44,8 @@ namespace FundooUserNotesApp
             services.AddScoped<IUserRL<User>, UserRL>();
             services.AddScoped<INoteBL, NoteBL>();
             services.AddScoped<INoteRL, NoteRL>();
+            services.AddTransient<ICollabBL, CollabBL>();
+            services.AddTransient<ICollabRL, CollabRL>();
 
             //Authentication services
             services.AddAuthentication(x =>

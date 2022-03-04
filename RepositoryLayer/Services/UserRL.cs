@@ -51,16 +51,6 @@ namespace RepositoryLayer.Services
                 newUser.Password = Encryptpass(user.Password);
                 newUser.CreatedAt = DateTime.Now;
 
-                //comparing to table to see if user is already registered
-                //User existingUser = this.context.UserTable.Where(X => X.EmailID == user.EmailID).FirstOrDefault();
-                //if (existingUser != null)
-                //{
-                    
-                //}
-                //else
-                //{
-
-                //}
                 this.context.UserTable.Add(newUser);
                 int result = this.context.SaveChanges();
                 if (result > 0)

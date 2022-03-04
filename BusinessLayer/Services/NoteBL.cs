@@ -61,6 +61,24 @@ namespace BusinessLayer.Services
         }
 
         /// <summary>
+        /// Retrieve a specific note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public IEnumerable<Note> GetIDNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.GetIDNote(noteid);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Updating note contents and update time
         /// </summary>
         /// <param name="note"></param>
@@ -132,6 +150,11 @@ namespace BusinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Delete a note forever
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         public bool ForeverDeleteNote(long noteid)
         {
             try
@@ -145,6 +168,12 @@ namespace BusinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// add a color to a note
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         public string AddNoteColor(string color, long noteid)
         {
             try
@@ -157,7 +186,13 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-public string RemoveNoteColor(long noteid)
+
+        /// <summary>
+        /// Remove a color assigned to a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public string RemoveNoteColor(long noteid)
         {
             try
             {
@@ -170,6 +205,12 @@ public string RemoveNoteColor(long noteid)
             }
         }
 
+        /// <summary>
+        /// add any background image to the note
+        /// </summary>
+        /// <param name="imageURL"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         public bool AddNoteBgImage(IFormFile imageURL, long noteid)
         {
             try
@@ -183,6 +224,11 @@ public string RemoveNoteColor(long noteid)
             }
         }
 
+        /// <summary>
+        /// Delete the background image from a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         public bool DeleteNoteBgImage(long noteid)
         {
             try
@@ -195,5 +241,7 @@ public string RemoveNoteColor(long noteid)
                 throw;
             }
         }
+
+        
     }
 }

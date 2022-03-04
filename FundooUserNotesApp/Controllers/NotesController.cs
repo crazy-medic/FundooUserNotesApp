@@ -39,15 +39,15 @@ namespace FundooUserNotesApp.Controllers
         /// </summary>
         /// <param name="noteModel"></param>
         /// <returns></returns>
-        [HttpPost("CreateNote")]
+        [HttpPost("Create")]
         public IActionResult CreateNote(NoteModel noteModel)
         {
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                if (this.Nbl.CreateNote(noteModel,userid))
+                if (this.Nbl.CreateNote(noteModel, userid))
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, message = "Note created" });
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Note created",data = noteModel});
                 }
                 else
                 {
@@ -64,7 +64,7 @@ namespace FundooUserNotesApp.Controllers
         /// API to retrieve all user notes
         /// </summary>
         /// <returns></returns>
-        [HttpGet("Shownotes")]
+        [HttpGet("Show")]
         public IActionResult GetAllNotes()
         {
             try
@@ -86,12 +86,34 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        [HttpGet("ShowFromId")]
+        public IActionResult GetIDNote(long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                IEnumerable<Note> NotefromID = Nbl.GetIDNote(noteid);
+                if(NotefromID != null)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = NotefromID });
+                }
+                else
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, message = "No Notes Found" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = 401, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
+
         /// <summary>
         /// API to update contents of a note and update its ModifiedAt time
         /// </summary>
         /// <param name="note"></param>
         /// <returns></returns>
-        [HttpPut("UpdateNote")]
+        [HttpPut("Update")]
         public IActionResult UpdateNote(Note note)
         {
             try
@@ -125,7 +147,7 @@ namespace FundooUserNotesApp.Controllers
         /// </summary>
         /// <param name="noteid"></param>
         /// <returns></returns>
-        [HttpPost("ArchiveNote")]
+        [HttpPut("Archive")]
         public IActionResult ArchiveNote(long noteid)
         {
             try
@@ -161,7 +183,7 @@ namespace FundooUserNotesApp.Controllers
         /// </summary>
         /// <param name="noteid"></param>
         /// <returns></returns>
-        [HttpPost("PinNote")]
+        [HttpPut("Pin")]
         public IActionResult PinNote(long noteid)
         {
             try
@@ -197,7 +219,7 @@ namespace FundooUserNotesApp.Controllers
         /// </summary>
         /// <param name="noteid"></param>
         /// <returns></returns>
-        [HttpDelete("DeleteNote")]
+        [HttpPut("Delete")]
         public IActionResult DeleteNote(long noteid)
         {
             try
@@ -267,7 +289,7 @@ namespace FundooUserNotesApp.Controllers
         /// <param name="color"></param>
         /// <param name="noteid"></param>
         /// <returns></returns>
-        [HttpPost("AddColor")]
+        [HttpPut("AddColor")]
         public IActionResult AddNoteColor(string color, long noteid)
         {
             try
@@ -300,7 +322,7 @@ namespace FundooUserNotesApp.Controllers
         /// <param name="color"></param>
         /// <param name="noteid"></param>
         /// <returns></returns>
-        [HttpPost("RemoveColor")]
+        [HttpPut("RemoveColor")]
         public IActionResult RemoveNoteColor(long noteid)
         {
             try
@@ -314,7 +336,7 @@ namespace FundooUserNotesApp.Controllers
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
                     }
-                    return this.BadRequest(new { status = 401, isSuccess = false, Message = "Note color not updated" });
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Note color not updated" });
                 }
                 else
                 {
@@ -323,16 +345,17 @@ namespace FundooUserNotesApp.Controllers
             }
             catch (Exception e)
             {
-                return this.BadRequest(new { status = 401, isSuccess = false, Message = e.Message });
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.Message });
             }
         }
+
         /// <summary>
         /// API for adding a background image for a note
         /// </summary>
         /// <param name="imageURL"></param>
         /// <param name="noteid"></param>
         /// <returns></returns>
-        [HttpPost("AddBgImage")]
+        [HttpPut("AddBgImage")]
         public IActionResult AddNoteBgImage(IFormFile imageURL, long noteid)
         {
             try
@@ -362,7 +385,7 @@ namespace FundooUserNotesApp.Controllers
         /// <summary>
         /// API to remove Background image from a note
         /// </summary>
-        [HttpDelete("RemoveBgImage")]
+        [HttpPut("RemoveBgImage")]
         public IActionResult DeleteNoteBgImage (long noteid)
         {
             try

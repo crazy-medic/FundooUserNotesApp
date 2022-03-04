@@ -44,15 +44,11 @@ namespace RepositoryLayer.Services
             try
             {
                 Note newNotes = new Note();
-                newNotes.NoteId = noteModel.NoteId;
                 newNotes.Title = noteModel.Title;
                 newNotes.Body = noteModel.Body;
                 newNotes.Reminder = noteModel.Reminder;
                 newNotes.Color = noteModel.Color;
                 newNotes.BgImage = noteModel.BgImage;
-                newNotes.IsArchived = noteModel.IsArchived;
-                newNotes.IsPinned = noteModel.IsPinned;
-                newNotes.IsDeleted = noteModel.IsDeleted;
                 newNotes.CreatedAt = DateTime.Now;
                 newNotes.UserId = userid;
                 //Adding the data to database
@@ -83,6 +79,23 @@ namespace RepositoryLayer.Services
             try
             {
                 return this.context.NotesTable.ToList().Where(x=>x.UserId == userid);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Show the user a specific note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public IEnumerable<Note> GetIDNote(long noteid)
+        {
+            try
+            {
+                return this.context.NotesTable.Where(x => x.NoteId == noteid);
             }
             catch (Exception)
             {
@@ -355,6 +368,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// function to remove a background image from a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         public bool DeleteNoteBgImage(long noteid)
         {
             try
@@ -378,5 +396,7 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+
+        
     }
 }
