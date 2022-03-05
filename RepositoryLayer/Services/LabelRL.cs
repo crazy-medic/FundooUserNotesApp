@@ -46,5 +46,40 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+
+        public IEnumerable<Label> GetAllNoteLabels(long userid)
+        {
+            try
+            {
+                return this.context.LabelsTable.Where(x => x.UserId == userid).ToList();
+                
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool RemoveNoteLabel(LabelModel labelModel)
+        {
+            try
+            {
+                var label = this.context.LabelsTable.Where(x => x.LabelName == labelModel.LabelName).FirstOrDefault();
+                if (label != null)
+                {
+                    this.context.LabelsTable.Remove(label);
+                    this.context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
+

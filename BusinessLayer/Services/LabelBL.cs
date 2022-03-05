@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interfaces;
 using CommonLayer.Models;
+using RepositoryLayer.Entities;
 using RepositoryLayer.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,30 @@ namespace BusinessLayer.Services
             try
             {
                 return this.labelRl.CreateLabel(labelModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Label> GetAllNoteLabels(long userid)
+        {
+            try
+            {
+                return this.labelRl.GetAllNoteLabels(userid);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool RemoveNoteLabel(LabelModel labelModel)
+        {
+            try
+            {
+                return this.labelRl.RemoveNoteLabel(labelModel);
             }
             catch (Exception)
             {
