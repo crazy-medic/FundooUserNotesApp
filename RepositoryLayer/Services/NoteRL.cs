@@ -397,6 +397,16 @@ namespace RepositoryLayer.Services
             }
         }
 
-        
+        public IEnumerable<Note> GetEveryonesNotes()
+        {
+            try
+            {
+                return this.context.NotesTable.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -242,6 +242,16 @@ namespace BusinessLayer.Services
             }
         }
 
-        
+        public IEnumerable<Note> GetEveryonesNotes()
+        {
+            try
+            {
+                return this.Nrl.GetEveryonesNotes();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

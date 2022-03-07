@@ -3,11 +3,16 @@ using CommonLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooUserNotesApp.Controllers
@@ -22,16 +27,21 @@ namespace FundooUserNotesApp.Controllers
         /// </summary>
         private readonly INoteBL Nbl;
         private readonly FundooUserNotesContext FUNcontext;
+        private readonly IMemoryCache memCache;
+        private readonly IDistributedCache distCache;
+        
 
         /// <summary>
         /// Construction function
         /// </summary>
         /// <param name="Nbl"></param>
         /// <param name="funContext"></param>
-        public NotesController(INoteBL Nbl, FundooUserNotesContext funContext)
+        public NotesController(INoteBL Nbl, FundooUserNotesContext funContext, IMemoryCache memCache, IDistributedCache distCache)
         {
             this.Nbl = Nbl;
             this.FUNcontext = funContext;
+            this.memCache = memCache;
+            this.distCache = distCache;
         }
 
         /// <summary>
@@ -86,6 +96,31 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        [HttpGet("redis")]
+        public async Task<IActionResult> GetAllNotesUsingRedisCache()
+        {
+            var cacheKey = "NotesList";
+            string serializedNotesList;
+            var NotesList = new List<Note>();
+            var redisNotesList = await distCache.GetAsync(cacheKey);
+            if (redisNotesList != null)
+            {
+                serializedNotesList = Encoding.UTF8.GetString(redisNotesList);
+                NotesList = JsonConvert.DeserializeObject<List<Note>>(serializedNotesList);
+            }
+            else
+            {
+                NotesList = (List<Note>)Nbl.GetEveryonesNotes();
+                serializedNotesList = JsonConvert.SerializeObject(NotesList);
+                redisNotesList = Encoding.UTF8.GetBytes(serializedNotesList);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distCache.SetAsync(cacheKey, redisNotesList, options);
+            }
+            return Ok(NotesList);
+        }
+
         [HttpGet("ShowFromId")]
         public IActionResult GetIDNote(long noteid)
         {
@@ -96,6 +131,31 @@ namespace FundooUserNotesApp.Controllers
                 if(NotefromID != null)
                 {
                     return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = NotefromID });
+                }
+                else
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, message = "No Notes Found" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = 401, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
+
+        /// <summary>
+        /// retrieving all notes for all users
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAll")]
+        public IActionResult GetEveryonesNotes()
+        {
+            try
+            {
+                IEnumerable<Note> notes = Nbl.GetEveryonesNotes();
+                if (notes != null)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = notes });
                 }
                 else
                 {

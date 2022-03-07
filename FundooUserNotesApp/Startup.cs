@@ -49,6 +49,13 @@ namespace FundooUserNotesApp
             services.AddScoped<ILabelBL, LabelBL>();
             services.AddScoped<ILabelRL, LabelRL>();
 
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost:6379";
+            });
+
+            services.AddMemoryCache();
+
             //Authentication services
             services.AddAuthentication(x =>
             {

@@ -23,6 +23,6 @@ namespace BusinessLayer.Interfaces
         public string RemoveNoteColor(long noteid);
         public bool AddNoteBgImage(IFormFile imageURL, long noteid);
         public bool DeleteNoteBgImage(long noteid);
-        
+        public IEnumerable<Note> GetEveryonesNotes();
     }
 }
