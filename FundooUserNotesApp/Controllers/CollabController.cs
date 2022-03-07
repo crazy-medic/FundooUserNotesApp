@@ -22,7 +22,7 @@
     public class CollabController : ControllerBase
     {
         /// <summary>
-        /// Creating variables to use for the various functions
+        /// Collection of Objects
         /// </summary>
         private readonly ICollabBL collabBL;
         private readonly FundooUserNotesContext fUNContext;
@@ -49,7 +49,7 @@
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var collabnote = fUNContext.NotesTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
+                var collabnote = this.fUNContext.NotesTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
                 if (collabnote.UserId == userid)
                 {
                     var result = this.collabBL.AddCollab(collabModel);
@@ -78,15 +78,18 @@
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                IEnumerable<Collaborator> collabnote = fUNContext.CollabTable.Where(x => x.NoteId == noteid).ToList();
-                if (collabnote!=null)
+                IEnumerable<Collaborator> collabnote = this.fUNContext.CollabTable.Where(x => x.NoteId == noteid).ToList();
+                if (collabnote != null)
                 {
                     var result = this.collabBL.Show(noteid);
-                    if (result!=null)
+                    if (result != null)
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Displaying all collabs", data = collabnote });
                     }
-                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Failed" });
+                    else
+                    {
+                        return this.BadRequest(new { status = 400, isSuccess = false, Message = "Failed" });
+                    }
                 }
                 return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to view all collabs of this note" });
             }
@@ -96,15 +99,20 @@
             }
         }
 
+        /// <summary>
+        /// API to remove a collaborator from a note
+        /// </summary>
+        /// <param name="collabModel"></param>
+        /// <returns></returns>
         [HttpDelete("Remove")]
         public IActionResult RemoveCollab(CollabModel collabModel)
         {
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var collabmember = fUNContext.CollabTable.Where(x => x.CollabEmail == collabModel.EmailId).SingleOrDefault();
-                var NoteOwner = fUNContext.NotesTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
-                if(NoteOwner.UserId == userid)
+                var collabmember = this.fUNContext.CollabTable.Where(x => x.CollabEmail == collabModel.EmailId).SingleOrDefault();
+                var noteOwner = this.fUNContext.NotesTable.Where(x => x.NoteId == collabModel.NotesId).SingleOrDefault();
+                if (noteOwner.UserId == userid)
                 {
                     var result = this.collabBL.RemoveCollab(collabModel);
                     if (result)

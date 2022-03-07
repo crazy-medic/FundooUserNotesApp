@@ -1,18 +1,20 @@
-﻿using BusinessLayer.Interfaces;
-using CommonLayer.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using RepositoryLayer.Context;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-
+﻿/// <summary>
+/// Controller file for all API regarding Labels
+/// </summary>
 namespace FundooUserNotesApp.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using BusinessLayer.Interfaces;
+    using CommonLayer.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Entities;
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -22,17 +24,17 @@ namespace FundooUserNotesApp.Controllers
         /// variables
         /// </summary>
         private readonly ILabelBL labelBL;
-        private readonly FundooUserNotesContext FUNcontext;
+        private readonly FundooUserNotesContext fUNcontext;
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the LabelController class
         /// </summary>
         /// <param name="labelBL"></param>
         /// <param name="FUNcontext"></param>
-        public LabelController(ILabelBL labelBL, FundooUserNotesContext FUNcontext)
+        public LabelController(ILabelBL labelBL, FundooUserNotesContext fUNcontext)
         {
             this.labelBL = labelBL;
-            this.FUNcontext = FUNcontext;
+            this.fUNcontext = fUNcontext;
         }
 
         /// <summary>
@@ -46,8 +48,8 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var LabelNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == labelModel.NotesId).SingleOrDefault();
-                if(LabelNote.UserId == userid)
+                var LabelNote = this.fUNcontext.NotesTable.Where(x => x.NoteId == labelModel.NotesId).SingleOrDefault();
+                if (LabelNote.UserId == userid)
                 {
                     var result = this.labelBL.CreateLabel(labelModel);
                     if (result)
@@ -64,17 +66,25 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        /// <summary>
+        /// API to retrieve all user labels of the user logged in
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAll")]
         public IActionResult GettAllNoteLabels()
         {
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                IEnumerable<Label> NoteLabels = this.labelBL.GetAllNoteLabels(userid);
-                if(NoteLabels != null)
+                IEnumerable<Label> noteLabels = this.labelBL.GetAllNoteLabels(userid);
+                if (noteLabels != null)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, Message = "Showing all labels of user", data = NoteLabels });
-                }return this.BadRequest(new { status = 400, isSuccess = false, Message = "Failed to get labels" });
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Showing all labels of user", data = noteLabels });
+                }
+                else
+                {
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Failed to get labels" });
+                }
             }
             catch (Exception e)
             {
@@ -88,8 +98,8 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var notedata = this.FUNcontext.NotesTable.Where(x => x.NoteId == labelModel.NotesId).FirstOrDefault();
-                if(notedata.UserId == userid)
+                var notedata = this.fUNcontext.NotesTable.Where(x => x.NoteId == labelModel.NotesId).FirstOrDefault();
+                if (notedata.UserId == userid)
                 {
                     var result = this.labelBL.RemoveNoteLabel(labelModel);
                     if (result)
@@ -101,7 +111,10 @@ namespace FundooUserNotesApp.Controllers
                         return this.BadRequest(new { status = 400, isSuccess = false, Message = "failed" }); 
                     }
                 }
-                return this.Unauthorized(new { status = 401, isSuccess = false, Message = "User not logged in" });
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "User not logged in" });
+                }
             }
             catch (Exception e)
             {

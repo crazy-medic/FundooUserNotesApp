@@ -1,22 +1,22 @@
-﻿using BusinessLayer.Interfaces;
-using CommonLayer.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
-using RepositoryLayer.Context;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FundooUserNotesApp.Controllers
+﻿namespace FundooUserNotesApp.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using BusinessLayer.Interfaces;
+    using CommonLayer.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Microsoft.Extensions.Caching.Memory;
+    using Newtonsoft.Json;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Entities;
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -25,8 +25,8 @@ namespace FundooUserNotesApp.Controllers
         /// <summary>
         /// Global variables
         /// </summary>
-        private readonly INoteBL Nbl;
-        private readonly FundooUserNotesContext FUNcontext;
+        private readonly INoteBL notebl;
+        private readonly FundooUserNotesContext fUNcontext;
         private readonly IMemoryCache memCache;
         private readonly IDistributedCache distCache;
         
@@ -36,10 +36,10 @@ namespace FundooUserNotesApp.Controllers
         /// </summary>
         /// <param name="Nbl"></param>
         /// <param name="funContext"></param>
-        public NotesController(INoteBL Nbl, FundooUserNotesContext funContext, IMemoryCache memCache, IDistributedCache distCache)
+        public NotesController(INoteBL notebl, FundooUserNotesContext funContext, IMemoryCache memCache, IDistributedCache distCache)
         {
-            this.Nbl = Nbl;
-            this.FUNcontext = funContext;
+            this.notebl = notebl;
+            this.fUNcontext = funContext;
             this.memCache = memCache;
             this.distCache = distCache;
         }
@@ -55,9 +55,9 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                if (this.Nbl.CreateNote(noteModel, userid))
+                if (this.notebl.CreateNote(noteModel, userid))
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, message = "Note created",data = noteModel});
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Note created", data = noteModel });
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace FundooUserNotesApp.Controllers
             }
             catch (Exception e)
             {
-                return this.BadRequest(new { status = 400,isSuccess = false, Message=e.InnerException.Message});
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
             }
         }
 
@@ -80,7 +80,7 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                IEnumerable<Note> notes = Nbl.GetAllNotes(userid);
+                IEnumerable<Note> notes = this.notebl.GetAllNotes(userid);
                 if (notes != null)
                 {
                     return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = notes });
@@ -101,24 +101,24 @@ namespace FundooUserNotesApp.Controllers
         {
             var cacheKey = "NotesList";
             string serializedNotesList;
-            var NotesList = new List<Note>();
-            var redisNotesList = await distCache.GetAsync(cacheKey);
+            var notesList = new List<Note>();
+            var redisNotesList = await this.distCache.GetAsync(cacheKey);
             if (redisNotesList != null)
             {
                 serializedNotesList = Encoding.UTF8.GetString(redisNotesList);
-                NotesList = JsonConvert.DeserializeObject<List<Note>>(serializedNotesList);
+                notesList = JsonConvert.DeserializeObject<List<Note>>(serializedNotesList);
             }
             else
             {
-                NotesList = (List<Note>)Nbl.GetEveryonesNotes();
-                serializedNotesList = JsonConvert.SerializeObject(NotesList);
+                notesList = (List<Note>)this.notebl.GetEveryonesNotes();
+                serializedNotesList = JsonConvert.SerializeObject(notesList);
                 redisNotesList = Encoding.UTF8.GetBytes(serializedNotesList);
                 var options = new DistributedCacheEntryOptions()
                     .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
                     .SetSlidingExpiration(TimeSpan.FromMinutes(2));
-                await distCache.SetAsync(cacheKey, redisNotesList, options);
+                await this.distCache.SetAsync(cacheKey, redisNotesList, options);
             }
-            return Ok(NotesList);
+            return this.Ok(notesList);
         }
 
         [HttpGet("ShowFromId")]
@@ -127,10 +127,10 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                IEnumerable<Note> NotefromID = Nbl.GetIDNote(noteid);
-                if(NotefromID != null)
+                IEnumerable<Note> noteFromID = this.notebl.GetIDNote(noteid);
+                if (noteFromID != null)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = NotefromID });
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = noteFromID });
                 }
                 else
                 {
@@ -152,7 +152,7 @@ namespace FundooUserNotesApp.Controllers
         {
             try
             {
-                IEnumerable<Note> notes = Nbl.GetEveryonesNotes();
+                IEnumerable<Note> notes = this.notebl.GetEveryonesNotes();
                 if (notes != null)
                 {
                     return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = notes });
@@ -181,7 +181,7 @@ namespace FundooUserNotesApp.Controllers
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 if (note.UserId == userid)
                 {
-                    var result = this.Nbl.UpdateNotes(note);
+                    var result = this.notebl.UpdateNotes(note);
                     if (result.Equals("Done"))
                     {
                         return this.Ok(new { Success = true, message = "Note Updated successfully " });
@@ -213,10 +213,10 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var ArchNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
-                if(ArchNote.UserId == userid)
+                var archNote = this.fUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (archNote.UserId == userid)
                 {
-                    var result = this.Nbl.ArchiveNote(noteid);
+                    var result = this.notebl.ArchiveNote(noteid);
                     if (result == true)
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Note Archived" });
@@ -249,10 +249,10 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var PinnedNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
-                if (PinnedNote.UserId == userid)
+                var pinnedNote = this.fUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (pinnedNote.UserId == userid)
                 {
-                    var result = this.Nbl.PinNote(noteid);
+                    var result = this.notebl.PinNote(noteid);
                     if (result == true)
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Note Pinned" });
@@ -285,10 +285,10 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var DeletedNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
-                if (DeletedNote.UserId == userid)
+                var deletedNote = this.fUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (deletedNote.UserId == userid)
                 {
-                    var result = this.Nbl.DeleteNote(noteid);
+                    var result = this.notebl.DeleteNote(noteid);
                     if (result == true)
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Note Deleted" });
@@ -321,10 +321,10 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var FDeleNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
-                if (FDeleNote.UserId == userid)
+                var fDeleNote = this.fUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (fDeleNote.UserId == userid)
                 {
-                    var result = this.Nbl.ForeverDeleteNote(noteid);
+                    var result = this.notebl.ForeverDeleteNote(noteid);
                     if (result == true)
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Deleted note forever" });
@@ -335,7 +335,6 @@ namespace FundooUserNotesApp.Controllers
                 {
                     return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
                 }
-
             }
             catch (Exception)
             {
@@ -355,10 +354,10 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var ColourNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
-                if (ColourNote.UserId == userid)
+                var colourNote = this.fUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (colourNote.UserId == userid)
                 {
-                    var result = this.Nbl.AddNoteColor(color, noteid);
+                    var result = this.notebl.AddNoteColor(color, noteid);
                     if (result == "Updated")
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
@@ -379,7 +378,6 @@ namespace FundooUserNotesApp.Controllers
         /// <summary>
         /// API to remove from notes
         /// </summary>
-        /// <param name="color"></param>
         /// <param name="noteid"></param>
         /// <returns></returns>
         [HttpPut("RemoveColor")]
@@ -388,10 +386,10 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var ColourNote = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
-                if (ColourNote.UserId == userid)
+                var colourNote = this.fUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (colourNote.UserId == userid)
                 {
-                    var result = this.Nbl.RemoveNoteColor(noteid);
+                    var result = this.notebl.RemoveNoteColor(noteid);
                     if (result == "Updated")
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
@@ -421,10 +419,10 @@ namespace FundooUserNotesApp.Controllers
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var NoteBgImage = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
-                if(NoteBgImage.UserId == userid)
+                var noteBgImage = this.fUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (noteBgImage.UserId == userid)
                 {
-                    var result = this.Nbl.AddNoteBgImage(imageURL,noteid);
+                    var result = this.notebl.AddNoteBgImage(imageURL, noteid);
                     if (result)
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Note Bg Image updated" });
@@ -446,19 +444,19 @@ namespace FundooUserNotesApp.Controllers
         /// API to remove Background image from a note
         /// </summary>
         [HttpPut("RemoveBgImage")]
-        public IActionResult DeleteNoteBgImage (long noteid)
+        public IActionResult DeleteNoteBgImage(long noteid)
         {
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var NoteBgImage = this.FUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
-                if(noteid == 0)
+                var noteBgImage = this.fUNcontext.NotesTable.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (noteid == 0)
                 {
                     return this.NotFound(new { status = 404, isSuccess = false, Message = "Noteid not entered, Please enter a note id!" });
                 }
-                if(NoteBgImage.UserId == userid)
+                if (noteBgImage.UserId == userid)
                 {
-                    var result = this.Nbl.DeleteNoteBgImage(noteid);
+                    var result = this.notebl.DeleteNoteBgImage(noteid);
                     if (result)
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Bg image deleted" });

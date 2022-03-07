@@ -1,25 +1,25 @@
-﻿using BusinessLayer.Interfaces;
-using CommonLayer.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-namespace FundooUserNotesApp.Controllers
+﻿namespace FundooUserNotesApp.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using BusinessLayer.Interfaces;
+    using CommonLayer.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using RepositoryLayer.Entities;
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
         /// <summary>
-        /// object creation
+        /// Initializes a new instance of the UserController class
         /// </summary>
-        public readonly IUserBL<User> bL;
+        private readonly IUserBL<User> bL;
 
         /// <summary>
         /// assignment of objects
@@ -42,10 +42,10 @@ namespace FundooUserNotesApp.Controllers
             {
                 if (signum == null)
                 {
-                    return NotFound(new { status = 404, isSuccess = false, message = "All fields are mandatory" });
+                    return this.NotFound(new { status = 404, isSuccess = false, message = "All fields are mandatory" });
                 }
-                bL.SignUp(signum);
-                return Ok(new { status = 200, isSuccess = true, message = "Sign UP success" });
+                this.bL.SignUp(signum);
+                return this.Ok(new { status = 200, isSuccess = true, message = "Sign UP success" });
             }
             catch (Exception)
             {
@@ -77,25 +77,25 @@ namespace FundooUserNotesApp.Controllers
         //}
 
         /// <summary>
-        /// Login Api
+        /// Login API
         /// </summary>
         /// <param name="LogUser"></param>
         /// <returns></returns>
         [HttpPost("Login")]
-        public IActionResult UserLogin(UserLogin LogUser)
+        public IActionResult UserLogin(UserLogin logUser)
         {
             try
             {
-                if (LogUser.EmailId == null)
+                if (logUser.EmailId == null)
                 {
-                    return NotFound(new { status = 404, isSuccess = false, message = "All fields are mandatory" });
+                    return this.NotFound(new { status = 404, isSuccess = false, message = "All fields are mandatory" });
                 }
-                LoginResponse result = bL.UserLogin(LogUser);
+                LoginResponse result = this.bL.UserLogin(logUser);
                 if(result.EmailId != null)
                 {
-                    return Ok(new { status = 200, isSuccess = true, message = "Sign UP success", data = result.Token });
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Sign UP success", data = result.Token });
                 }
-                return BadRequest(new { status = 401, isSuccess = false, Message = "Internal error" });
+                return this.BadRequest(new { status = 401, isSuccess = false, Message = "Internal error" });
             }
             catch (Exception)
             {
@@ -111,13 +111,13 @@ namespace FundooUserNotesApp.Controllers
         /// <returns></returns>
         [HttpPut("ResetPassword")]
         [Authorize]
-        public ActionResult ResetPassword(string Password, string ConfirmPassword)
+        public ActionResult ResetPassword(string password, string confirmPassword)
         {
             try
             {
                 // var email = User.Claims.FirstOrDefault(e => e.Type == "Email").Value;
                 var email = User.FindFirst(ClaimTypes.Email).Value.ToString();
-                var Reset = this.bL.ResetPassword(email, Password, ConfirmPassword);
+                var reset = this.bL.ResetPassword(email, password, confirmPassword);
                 return this.Ok(new { status = 200, isSuccess = true, Message = "Password change success" });
             }
             catch (Exception e)
@@ -134,7 +134,7 @@ namespace FundooUserNotesApp.Controllers
         [HttpPost("ForgotPassword")]
         public IActionResult ForgotPassword(string email)
         {
-            if(email == null)
+            if (email == null)
             {
                 return this.BadRequest(new { Status = 400, isSuccess = false, Message = "Enter an email" });
             }
