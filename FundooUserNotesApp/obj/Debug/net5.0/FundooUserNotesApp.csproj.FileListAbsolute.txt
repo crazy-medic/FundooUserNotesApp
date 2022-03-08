@@ -19,6 +19,7 @@ D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.Entity
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Design.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Relational.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
@@ -32,10 +33,13 @@ D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.Identi
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.OpenApi.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Newtonsoft.Json.dll
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Pipelines.Sockets.Unofficial.dll
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\StackExchange.Redis.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\System.Diagnostics.PerformanceCounter.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\System.Runtime.Caching.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
@@ -50,6 +54,7 @@ D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\runtimes\win-x64
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.pdb
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
+D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\BusinessLayer.dll
@@ -74,8 +79,3 @@ D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\FundooUserNotesA
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\ref\FundooUserNotesApp.dll
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\FundooUserNotesApp.pdb
 D:\Repos\FundooUserNotesApp\FundooUserNotesApp\obj\Debug\net5.0\FundooUserNotesApp.genruntimeconfig.cache
-D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
-D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\Pipelines.Sockets.Unofficial.dll
-D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\StackExchange.Redis.dll
-D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\System.Diagnostics.PerformanceCounter.dll
-D:\Repos\FundooUserNotesApp\FundooUserNotesApp\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll

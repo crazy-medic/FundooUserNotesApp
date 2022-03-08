@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Models;
+using RepositoryLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace BusinessLayer.Interfaces
         //public IEnumerable<TEntity> GetAllData();
         public string SendResetLink(string email);
         public bool ResetPassword(string email, string Password, string ConfirmPassword);
+        public IEnumerable<User> GetEveryUser();
     }
 }

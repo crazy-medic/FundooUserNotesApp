@@ -15,5 +15,6 @@ namespace RepositoryLayer.Interfaces
         //public IEnumerable<User> GetAllData();
         public string SendResetLink(string email);
         public bool ResetPassword(string email, string Password, string ConfirmPassword);
+        public IEnumerable<User> GetEveryUser();
     }
 }

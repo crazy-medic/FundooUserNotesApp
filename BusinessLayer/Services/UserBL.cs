@@ -97,5 +97,17 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public IEnumerable<User> GetEveryUser()
+        {
+            try
+            {
+                return this.userRL.GetEveryUser();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

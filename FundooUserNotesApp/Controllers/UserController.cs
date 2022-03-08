@@ -4,12 +4,16 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using System.Text;
     using System.Threading.Tasks;
     using BusinessLayer.Interfaces;
     using CommonLayer.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Microsoft.Extensions.Caching.Memory;
+    using Newtonsoft.Json;
     using RepositoryLayer.Entities;
 
     [Route("api/[controller]")]
@@ -20,14 +24,18 @@
         /// Initializes a new instance of the UserController class
         /// </summary>
         private readonly IUserBL<User> bL;
+        private readonly IMemoryCache memCache;
+        private readonly IDistributedCache distCache;
 
         /// <summary>
         /// assignment of objects
         /// </summary>
         /// <param name="bL"></param>
-        public UserController(IUserBL<User> bL)
+        public UserController(IUserBL<User> bL, IMemoryCache memCache, IDistributedCache distCache)
         {
             this.bL = bL;
+            this.memCache = memCache;
+            this.distCache = distCache;
         }
 
         /// <summary>
@@ -53,28 +61,30 @@
             }
         }
 
-        //deprecated api
-        /// <summary>
-        /// API to check list of users of the Fundoo app
-        /// </summary>
-        /// <returns></returns>
-        //[HttpGet("listallusers")]
-        //public ActionResult GetAllUserInformation()
-        //{
-        //    try
-        //    {
-        //        var data = this.bL.GetAllData();
-        //        if (data == null)
-        //        {
-        //            return NotFound(new { status = 404, isSuccess = false, message = "There are no users for this site!" });
-        //        }
-        //        return Ok(new { status = 200, isSuccess = true, message = "Got all users", Data = data });
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
+        [HttpGet("redis")]
+        public async Task<IActionResult> GetAllNotesUsingRedisCache()
+        {
+            var cacheKey = "UserList";
+            string serializedUserList;
+            var userList = new List<User>();
+            var redisUserList = await this.distCache.GetAsync(cacheKey);
+            if (redisUserList != null)
+            {
+                serializedUserList = Encoding.UTF8.GetString(redisUserList);
+                redisUserList = JsonConvert.DeserializeObject<List<User>>(serializedUserList);
+            }
+            else
+            {
+                userList = (List<User>)this.bL.GetEveryUser();
+                serializedUserList = JsonConvert.SerializeObject(redisUserList);
+                redisUserList = Encoding.UTF8.GetBytes(serializedUserList);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await this.distCache.SetAsync(cacheKey, redisUserList, options);
+            }
+            return this.Ok(userList);
+        }
 
         /// <summary>
         /// Login API

@@ -35,7 +35,19 @@ namespace BusinessLayer.Services
             {
                 return this.collabRL.AddCollab(collaborator);
             }
-            catch (Exception e)
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Note> GetEveryCollab()
+        {
+            try
+            {
+                return this.collabRL.GetEveryCollab();
+            }
+            catch (Exception)
             {
                 throw;
             }

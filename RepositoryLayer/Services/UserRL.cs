@@ -218,5 +218,18 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+
+        public IEnumerable<User> GetEveryUser()
+        {
+            try
+            {
+                return this.context.UserTable.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
+

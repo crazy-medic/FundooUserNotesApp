@@ -66,6 +66,18 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public IEnumerable<Collaborator> GetEveryCollab()
+        {
+            try
+            {
+                return (IEnumerable<Collaborator>)this.FUNContext.CollabTable.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public bool RemoveCollab(CollabModel collabModel)
         {
             try
