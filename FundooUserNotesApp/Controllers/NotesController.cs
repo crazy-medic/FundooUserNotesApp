@@ -121,7 +121,7 @@
             return this.Ok(notesList);
         }
 
-        [HttpGet("Show{Id}")]
+        [HttpGet("{id}/Show")]
         public IActionResult GetIDNote(long noteid)
         {
             try

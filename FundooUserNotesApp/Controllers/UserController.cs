@@ -61,6 +61,10 @@
             }
         }
 
+        /// <summary>
+        /// Displays cache of all users in db to admin
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("redis")]
         public async Task<IActionResult> GetAllNotesUsingRedisCache()
         {
