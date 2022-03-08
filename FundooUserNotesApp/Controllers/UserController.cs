@@ -71,7 +71,7 @@
             if (redisUserList != null)
             {
                 serializedUserList = Encoding.UTF8.GetString(redisUserList);
-                redisUserList = JsonConvert.DeserializeObject<List<User>>(serializedUserList);
+                userList = JsonConvert.DeserializeObject<List<User>>(serializedUserList);
             }
             else
             {

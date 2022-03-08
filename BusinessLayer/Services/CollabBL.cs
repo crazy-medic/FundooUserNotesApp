@@ -41,7 +41,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        public IEnumerable<Note> GetEveryCollab()
+        public IEnumerable<Collaborator> GetEveryCollab()
         {
             try
             {

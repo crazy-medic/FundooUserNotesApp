@@ -13,5 +13,7 @@ namespace RepositoryLayer.Interfaces
         public bool CreateLabel(LabelModel labelModel);
         public IEnumerable<Label> GetAllNoteLabels(long userid);
         public bool RemoveNoteLabel(LabelModel labelModel);
+        public bool RemoveLabel(Label labelData);
+        public bool UpdateLabel(string oldLabelName, string newLabelName);
     }
 }

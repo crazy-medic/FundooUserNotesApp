@@ -70,7 +70,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                return (IEnumerable<Collaborator>)this.FUNContext.CollabTable.ToList();
+                return this.FUNContext.CollabTable.ToList();
             }
             catch (Exception)
             {
@@ -117,5 +117,7 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+
+
     }
 }

@@ -60,7 +60,7 @@ namespace CommonLayer.Models
                 };
                 message.From = new MailAddress("vineethclass250@gmail.com");
                 message.To.Add(new MailAddress("vineethclass250@gmail.com"));
-                string bodymessage = "For reset click here <a href='https://localhost:44320/api/User/resetPassword'> click me</a>" + "You can copy the token Provided here to reset your password :  " + token;
+                string bodymessage = "Dear User /nFor reset click here <a href='https://localhost:44320/api/User/resetPassword'> click me</a>" + "You can copy the token Provided here to reset your password :  " + token;
                 message.Subject = "Reset password link";
                 message.IsBodyHtml = true; //to make message body as html  
                 message.Body = bodymessage;

@@ -60,6 +60,28 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public bool RemoveLabel(Label labelData)
+        {
+            try
+            {
+                var label = this.context.LabelsTable.Where(x => x.LabelName == labelData.LabelName).FirstOrDefault();
+                if (label != null)
+                {
+                    this.context.LabelsTable.Remove(label);
+                    this.context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public bool RemoveNoteLabel(LabelModel labelModel)
         {
             try
@@ -72,8 +94,32 @@ namespace RepositoryLayer.Services
                     return true;
                 }
                 else
+                {
                     return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
+        public bool UpdateLabel(string oldLabelName, string newLabelName)
+        {
+            try
+            {
+                var updateLabel = this.context.LabelsTable.Where(x => x.LabelName == oldLabelName).FirstOrDefault();
+                if (updateLabel != null)
+                {
+                    updateLabel.LabelName = newLabelName;
+                    this.context.LabelsTable.Update(updateLabel);
+                    this.context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception)
             {

@@ -141,25 +141,25 @@
         public async Task<IActionResult> GetAllNotesUsingRedisCache()
         {
             var cacheKey = "CollabList";
-            string serializedCollabList;
+            string serializedCollList;
             var collabList = new List<Collaborator>();
-            var redisCollabList = await this.distCache.GetAsync(cacheKey);
-            if (redisCollabList != null)
+            var redisCollList = await this.distCache.GetAsync(cacheKey);
+            if (redisCollList != null)
             {
-                serializedCollabList = Encoding.UTF8.GetString(redisCollabList);
-                redisCollabList = JsonConvert.DeserializeObject<List<Collaborator>>(serializedCollabList);
+                serializedCollList = Encoding.UTF8.GetString(redisCollList);
+                collabList = JsonConvert.DeserializeObject<List<Collaborator>>(serializedCollList);
             }
             else
             {
                 collabList = (List<Collaborator>)this.collabBL.GetEveryCollab();
-                serializedCollabList = JsonConvert.SerializeObject(redisCollabList);
-                redisCollabList = Encoding.UTF8.GetBytes(serializedCollabList);
+                serializedCollList = JsonConvert.SerializeObject(redisCollList);
+                redisCollList = Encoding.UTF8.GetBytes(serializedCollList);
                 var options = new DistributedCacheEntryOptions()
                     .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
                     .SetSlidingExpiration(TimeSpan.FromMinutes(2));
-                await this.distCache.SetAsync(cacheKey, redisCollabList, options);
+                await this.distCache.SetAsync(cacheKey, redisCollList, options);
             }
-            return this.Ok(redisCollabList);
+            return this.Ok(collabList);
         }
     }
 }

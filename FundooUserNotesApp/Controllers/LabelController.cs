@@ -92,7 +92,37 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
-        [HttpDelete("Remove")]
+        [HttpPut("Update")]
+        public IActionResult UpdateLabel(string oldLabelName, string newLabelName)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var updateLabel = this.fUNcontext.LabelsTable.Where(x => x.LabelName == oldLabelName).FirstOrDefault();
+                if (updateLabel.UserId == userid)
+                {
+                    var result = this.labelBL.UpdateLabel(oldLabelName, newLabelName);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Label Updated", data = newLabelName });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { status = 400, isSuccess = false, Message = "failed" });
+                    }
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "User not logged in" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
+
+        [HttpPut("RemoveFromNote")]
         public IActionResult RemoveNoteLabel(LabelModel labelModel)
         {
             try
@@ -106,9 +136,39 @@ namespace FundooUserNotesApp.Controllers
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Label removed from note", data = labelModel.LabelName });
                     }
-                    else 
-                    { 
-                        return this.BadRequest(new { status = 400, isSuccess = false, Message = "failed" }); 
+                    else
+                    {
+                        return this.BadRequest(new { status = 400, isSuccess = false, Message = "failed" });
+                    }
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "User not logged in" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
+
+        [HttpDelete("Delete")]
+        public IActionResult RemoveLabel(string labelName)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var labelData = this.fUNcontext.LabelsTable.Where(x => x.LabelName == labelName).FirstOrDefault();
+                if (labelData.UserId == userid)
+                {
+                    var result = this.labelBL.RemoveLabel(labelData);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Label removed", data = labelName });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { status = 400, isSuccess = false, Message = "failed" });
                     }
                 }
                 else

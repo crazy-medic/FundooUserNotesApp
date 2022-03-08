@@ -42,11 +42,35 @@ namespace BusinessLayer.Services
             }
         }
 
+        public bool RemoveLabel(Label labelData)
+        {
+            try
+            {
+                return this.labelRl.RemoveLabel(labelData);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public bool RemoveNoteLabel(LabelModel labelModel)
         {
             try
             {
                 return this.labelRl.RemoveNoteLabel(labelModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool UpdateLabel(string oldLabelName, string newLabelName)
+        {
+            try
+            {
+                return this.labelRl.UpdateLabel(oldLabelName, newLabelName);
             }
             catch (Exception)
             {

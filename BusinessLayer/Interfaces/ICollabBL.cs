@@ -13,6 +13,6 @@ namespace BusinessLayer.Interfaces
         public bool AddCollab(CollabModel collaborator);
         public IEnumerable<Collaborator> Show(long noteid);
         public bool RemoveCollab(CollabModel collabModel);
-        public IEnumerable<Note> GetEveryCollab();
+        public IEnumerable<Collaborator> GetEveryCollab();
     }
 }
