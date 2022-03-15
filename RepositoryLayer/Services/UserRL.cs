@@ -1,21 +1,21 @@
-﻿using CommonLayer.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using RepositoryLayer.Context;
-using RepositoryLayer.Entities;
-using RepositoryLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RepositoryLayer.Services
+﻿namespace RepositoryLayer.Services
 {
+    using CommonLayer.Models;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Entities;
+    using RepositoryLayer.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public class UserRL : IUserRL<User>
     {
         /// <summary>
