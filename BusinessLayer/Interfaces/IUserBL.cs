@@ -14,7 +14,7 @@ namespace BusinessLayer.Interfaces
         public LoginResponse UserLogin(UserLogin LogUser);
         //public IEnumerable<TEntity> GetAllData();
         public string SendResetLink(string email);
-        public bool ResetPassword(string email, string Password, string ConfirmPassword);
+        public bool ResetPassword(string email, string Password);
         public IEnumerable<User> GetEveryUser();
     }
 }

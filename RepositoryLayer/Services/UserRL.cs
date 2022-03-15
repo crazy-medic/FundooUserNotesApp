@@ -196,14 +196,14 @@ namespace RepositoryLayer.Services
         /// <param name="resetPassword"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public bool ResetPassword(string email, string Password, string ConfirmPassword)
+        public bool ResetPassword(string email, string Password)
         {
             try
             {
                 var Entries = this.context.UserTable.FirstOrDefault(x => x.EmailID == email);
                 if (Entries != null)
                 {
-                    Entries.Password = ConfirmPassword;
+                    Entries.Password = Password;
                     //this.context.Entry(Entries).State = EntityState.Modified;
                     this.context.SaveChanges();
                     return true;

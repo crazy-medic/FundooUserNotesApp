@@ -131,7 +131,7 @@
             {
                 // var email = User.Claims.FirstOrDefault(e => e.Type == "Email").Value;
                 var email = User.FindFirst(ClaimTypes.Email).Value.ToString();
-                var reset = this.bL.ResetPassword(email, password, confirmPassword);
+                var reset = this.bL.ResetPassword(email, password);
                 return this.Ok(new { status = 200, isSuccess = true, Message = "Password change success" });
             }
             catch (Exception e)
