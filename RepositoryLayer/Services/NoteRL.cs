@@ -1,20 +1,20 @@
-﻿using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using CommonLayer.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using RepositoryLayer.Context;
-using RepositoryLayer.Entities;
-using RepositoryLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RepositoryLayer.Services
+﻿namespace RepositoryLayer.Services
 {
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
+    using CommonLayer.Models;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Entities;
+    using RepositoryLayer.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public class NoteRL : INoteRL
     {
         /// <summary>
@@ -74,7 +74,7 @@ namespace RepositoryLayer.Services
         /// Show user all his notes using this function
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Note> GetAllNotes(long userid)
+        public IEnumerable<Note> ShowUserNotes(long userid)
         {
             try
             {
@@ -397,6 +397,10 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// admin function
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Note> GetEveryonesNotes()
         {
             try

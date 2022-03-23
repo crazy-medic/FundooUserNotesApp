@@ -75,12 +75,12 @@
         /// </summary>
         /// <returns></returns>
         [HttpGet("Show")]
-        public IActionResult GetAllNotes()
+        public IActionResult ShowUserNotes()
         {
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                IEnumerable<Note> notes = this.notebl.GetAllNotes(userid);
+                IEnumerable<Note> notes = this.notebl.ShowUserNotes(userid);
                 if (notes != null)
                 {
                     return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = notes });

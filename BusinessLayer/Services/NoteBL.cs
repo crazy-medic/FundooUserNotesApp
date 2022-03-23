@@ -48,7 +48,7 @@ namespace BusinessLayer.Services
         /// Retrieving all notes
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Note> GetAllNotes(long userid)
+        public IEnumerable<Note> ShowUserNotes(long userid)
         {
             try
             {

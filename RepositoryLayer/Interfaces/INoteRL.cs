@@ -12,7 +12,7 @@ namespace RepositoryLayer.Interfaces
     public interface INoteRL
     {
         public bool CreateNote(NoteModel noteModel, long userid);
-        public IEnumerable<Note> GetAllNotes(long userid);
+        public IEnumerable<Note> ShowUserNotes(long userid);
         public IEnumerable<Note> GetIDNote(long noteid);
         public string UpdateNotes(Note note);
         public bool ArchiveNote(long noteid);
