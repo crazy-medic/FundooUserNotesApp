@@ -52,7 +52,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return this.Nrl.GetAllNotes(userid);
+                return this.Nrl.ShowUserNotes(userid);
             }
             catch (Exception)
             {

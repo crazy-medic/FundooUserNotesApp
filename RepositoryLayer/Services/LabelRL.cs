@@ -18,7 +18,8 @@ namespace RepositoryLayer.Services
         {
             this.context = context;
         }
-        public bool CreateLabel(LabelModel labelModel)
+
+        public bool AssignLabel(LabelModel labelModel)
         {
             try
             {
@@ -38,6 +39,30 @@ namespace RepositoryLayer.Services
                         return true;
                     }
                     return false;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool CreateLabel(string labelname, long userid)
+        {
+            try
+            {
+                Label label = new Label()
+                {
+                    LabelName = labelname,
+                    NoteId = null,
+                    UserId = userid
+                };
+                this.context.LabelsTable.Add(label);
+                int result = this.context.SaveChanges();
+                if (result > 0)
+                {
+                    return true;
                 }
                 return false;
             }

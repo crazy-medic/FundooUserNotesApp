@@ -18,11 +18,23 @@ namespace BusinessLayer.Services
         {
             this.labelRl = labelRl;
         }
-        public bool CreateLabel(LabelModel labelModel)
+        public bool AssignLabel(LabelModel labelModel)
         {
             try
             {
-                return this.labelRl.CreateLabel(labelModel);
+                return this.labelRl.AssignLabel(labelModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool CreateLabel(string labelname, long userid)
+        {
+            try
+            {
+                return this.labelRl.CreateLabel(labelname, userid);
             }
             catch (Exception)
             {

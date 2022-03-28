@@ -37,13 +37,39 @@ namespace FundooUserNotesApp.Controllers
             this.fUNcontext = fUNcontext;
         }
 
+        [HttpPost("Create")]
+        public IActionResult CreateLabel(string labelname)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                if (labelname == string.Empty)
+                {
+                    return this.NotFound(new { status = 204, isSuccess = false, Message = "Label name cannot be empty" });
+                }
+                else
+                {
+                    var result = this.labelBL.CreateLabel(labelname,userid);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Label created" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "failed" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
+
         /// <summary>
         /// API to create a label for note of noteid
         /// </summary>
         /// <param name="labelModel"></param>
         /// <returns></returns>
-        [HttpPost("Create")]
-        public IActionResult CreateLabel(LabelModel labelModel)
+        [HttpPost("Assign")]
+        public IActionResult AssignLabel(LabelModel labelModel)
         {
             try
             {
@@ -51,7 +77,7 @@ namespace FundooUserNotesApp.Controllers
                 var LabelNote = this.fUNcontext.NotesTable.Where(x => x.NoteId == labelModel.NotesId).SingleOrDefault();
                 if (LabelNote.UserId == userid)
                 {
-                    var result = this.labelBL.CreateLabel(labelModel);
+                    var result = this.labelBL.AssignLabel(labelModel);
                     if (result)
                     {
                         return this.Ok(new { status = 200, isSuccess = true, Message = "Label created", data = labelModel.LabelName });
@@ -92,6 +118,12 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Update a label
+        /// </summary>
+        /// <param name="oldLabelName"></param>
+        /// <param name="newLabelName"></param>
+        /// <returns></returns>
         [HttpPut("Update")]
         public IActionResult UpdateLabel(string oldLabelName, string newLabelName)
         {
@@ -122,6 +154,11 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Unassign a note of its label
+        /// </summary>
+        /// <param name="labelModel"></param>
+        /// <returns></returns>
         [HttpPut("RemoveFromNote")]
         public IActionResult RemoveNoteLabel(LabelModel labelModel)
         {
@@ -152,6 +189,11 @@ namespace FundooUserNotesApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Permanently remove a label
+        /// </summary>
+        /// <param name="labelName"></param>
+        /// <returns></returns>
         [HttpDelete("Delete")]
         public IActionResult RemoveLabel(string labelName)
         {
