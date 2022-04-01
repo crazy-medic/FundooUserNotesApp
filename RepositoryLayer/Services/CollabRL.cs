@@ -43,6 +43,7 @@ namespace RepositoryLayer.Services
                 {
                     Collaborator newCollaborator = new Collaborator();
                     newCollaborator.UserID = Collabuserdata.UserID;
+                    newCollaborator.Name = Collabuserdata.FirstName +' '+ Collabuserdata.LastName;
                     newCollaborator.NoteId = collab.NotesId;
                     newCollaborator.CollabEmail = collab.EmailId;
                     //Adding the data to database
@@ -82,7 +83,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var collab = this.FUNContext.CollabTable.Where(x => x.CollabEmail == collabModel.EmailId).SingleOrDefault();
+                var collab = this.FUNContext.CollabTable.Where(x => x.CollabEmail == collabModel.EmailId).FirstOrDefault();
                 if(collab != null)
                 {
                     this.FUNContext.CollabTable.Remove(collab);

@@ -12,7 +12,7 @@ namespace RepositoryLayer.Interfaces
     {
         public bool SignUp(SignUpModel user);
         public LoginResponse UserLogin(UserLogin LogUser);
-        //public IEnumerable<User> GetAllData();
+        public IEnumerable<User> GetAllData();
         public string SendResetLink(string email);
         public bool ResetPassword(string email, string Password);
         public IEnumerable<User> GetEveryUser();

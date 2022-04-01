@@ -112,7 +112,7 @@
         /// </summary>
         /// <param name="collabModel"></param>
         /// <returns></returns>
-        [HttpDelete("Remove")]
+        [HttpPost("Remove")]
         public IActionResult RemoveCollab(CollabModel collabModel)
         {
             try

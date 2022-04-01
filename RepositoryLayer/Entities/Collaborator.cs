@@ -14,6 +14,7 @@ namespace RepositoryLayer.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long CollabID { get; set; }
         public string CollabEmail { get; set; }
+        public string Name { get; set; }
 
         [ForeignKey("note")]
         public long NoteId { get; set; }

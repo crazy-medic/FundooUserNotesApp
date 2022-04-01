@@ -40,10 +40,10 @@ namespace BusinessLayer.Services
         /// Gets the alldata.
         /// </summary>
         /// <returns></returns>
-        //public IEnumerable<User> GetAllData()
-        //{
-        //    return this.userRL.GetAllData();
-        //}
+        public IEnumerable<User> GetAllData()
+        {
+            return this.userRL.GetAllData();
+        }
 
         /// <summary>
         /// Users the login.

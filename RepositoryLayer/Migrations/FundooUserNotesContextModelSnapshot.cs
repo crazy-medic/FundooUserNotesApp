@@ -29,6 +29,9 @@ namespace RepositoryLayer.Migrations
                     b.Property<string>("CollabEmail")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<long>("NoteId")
                         .HasColumnType("bigint");
 

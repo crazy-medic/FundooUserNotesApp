@@ -90,6 +90,27 @@
             return this.Ok(userList);
         }
 
+        [HttpGet("GetUsers")]
+        public IActionResult GetAllUserData()
+        {
+            try
+            {
+                IEnumerable<User> user = this.bL.GetEveryUser();
+                if (user != null)
+                {
+                    return this.Ok(new { Status = 200, isSuccess = true, Message = "Got all users", data = user });
+                }
+                else
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, Message = "No user found for this site" });
+                }
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { status = 401, isSuccess = false, Message = "Internal error" });
+            }
+        }
+
         /// <summary>
         /// Login API
         /// </summary>
@@ -107,13 +128,13 @@
                 LoginResponse result = this.bL.UserLogin(logUser);
                 if(result.EmailId != null)
                 {
-                    return this.Ok(new { status = 200, isSuccess = true, message = "Sign UP success", data = result.Token });
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Login UP success", data = result.Token });
                 }
                 return this.BadRequest(new { status = 401, isSuccess = false, Message = "Internal error" });
             }
             catch (Exception)
             {
-                throw;
+                return this.NotFound(new { status = 404, isSuccess = false, Message = "Details are invalid" });
             }
         }
 

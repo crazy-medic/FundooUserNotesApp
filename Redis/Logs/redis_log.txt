@@ -1,0 +1,11 @@
+[21840] 31 Mar 16:46:25.217 * Redis 3.0.504 (00000000/0) 64 bit, standalone mode, port 6379, pid 21840 ready to start.
+[21840] 31 Mar 16:46:25.218 # Server started, Redis version 3.0.504
+[21840] 31 Mar 16:46:25.219 * The server is now ready to accept connections on port 6379
+[21840] 31 Mar 16:51:26.034 * 10 changes in 300 seconds. Saving...
+[21840] 31 Mar 16:51:26.040 * Background saving started by pid 10288
+[21840] 31 Mar 16:51:26.265 # fork operation complete
+[21840] 31 Mar 16:51:26.280 * Background saving terminated with success
+[21840] 31 Mar 16:56:27.023 * 10 changes in 300 seconds. Saving...
+[21840] 31 Mar 16:56:27.029 * Background saving started by pid 20376
+[21840] 31 Mar 16:56:27.464 # fork operation complete
+[21840] 31 Mar 16:56:27.465 * Background saving terminated with success

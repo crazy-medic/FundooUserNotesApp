@@ -72,10 +72,10 @@
         /// Retrieving All users
         /// </summary>
         /// <returns></returns>
-        //public IEnumerable<User> GetAllData()
-        //{
-        //    return context.UserTable.ToList();
-        //}
+        public IEnumerable<User> GetAllData()
+        {
+            return context.UserTable.ToList();
+        }
 
         /// <summary>
         /// Attempting to log user into the site.
